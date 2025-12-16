@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Format Poster Generator</title>
+    <!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Roboto:wght@400;700;900&family=Montserrat:wght@400;600;700;900&family=Playfair+Display:wght@400;700;900&family=Oswald:wght@400;600;700&family=Lato:wght@400;700;900&family=Raleway:wght@400;600;700;900&family=Open+Sans:wght@400;600;700;900&family=Ubuntu:wght@400;700&family=Bebas+Neue&family=Merriweather:wght@400;700;900&family=Dancing+Script:wght@400;700&family=Pacifico&family=Caveat:wght@400;700&family=Righteous&family=Lobster&family=Anton&family=Satisfy&family=Permanent+Marker&family=Indie+Flower&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== GLOBAL SETTINGS ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        /* ==================== CONTROL PANEL - RESPONSIVE ==================== */
+        .control-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 1400px;
+            margin: 0 auto 30px;
+        }
+
+        @media (min-width: 768px) {
+            .control-panel {
+                padding: 30px;
+            }
+        }
+
+        .control-panel h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        @media (min-width: 768px) {
+            .control-panel h1 {
+                font-size: 28px;
+            }
+        }
+
+        .control-panel p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        @media (min-width: 768px) {
+            .control-panel p {
+                margin-bottom: 25px;
+                font-size: 14px;
+            }
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        @media (min-width: 768px) {
+            .control-section {
+                margin-bottom: 25px;
+                padding: 20px;
+            }
+        }
+
+        .control-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .control-section h3 {
+                font-size: 18px;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        @media (min-width: 768px) {
+            label {
+                font-size: 14px;
+            }
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="color"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            input[type="text"],
+            textarea,
+            select {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .color-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .color-group {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 45px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            font-size: 12px;
+        }
+
+        @media (min-width: 768px) {
+            input[type="file"] {
+                font-size: 14px;
+            }
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 768px) {
+            button {
+                padding: 12px 30px;
+                font-size: 15px;
+            }
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        button.success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        button.download {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* ==================== CAROUSEL SECTION ==================== */
+        .carousel-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 1400px;
+            margin: 0 auto 30px;
+        }
+
+        @media (min-width: 768px) {
+            .carousel-container {
+                padding: 30px;
+            }
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .carousel-item {
+                min-width: calc(33.333% - 14px);
+            }
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .carousel-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .carousel-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: #667eea;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* ==================== PREVIEW CONTAINER ==================== */
+        .preview-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 1200px) {
+            .preview-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .format-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        @media (min-width: 768px) {
+            .format-section {
+                padding: 30px;
+            }
+        }
+
+        .format-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        @media (min-width: 768px) {
+            .format-section h2 {
+                font-size: 22px;
+            }
+        }
+
+        .poster-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .poster-wrapper {
+                padding: 20px;
+            }
+        }
+
+        /* ==================== POSTER STYLES (CUSTOMIZABLE) ==================== */
+        .poster {
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 15px;
+        }
+
+        .poster-mobile {
+            width: 280px;
+            height: 500px;
+        }
+
+        @media (min-width: 768px) {
+            .poster-mobile {
+                width: 360px;
+                height: 640px;
+            }
+        }
+
+        .poster-desktop {
+            width: 100%;
+            max-width: 500px;
+            height: 280px;
+        }
+
+        @media (min-width: 768px) {
+            .poster-desktop {
+                max-width: 640px;
+                height: 360px;
+            }
+        }
+
+        /* THEME VARIABLES - CHANGE THESE TO CREATE NEW THEMES */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --text-color: #ffffff;
+            --accent-color: #ffd700;
+        }
+
+        .poster-content {
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        @media (min-width: 768px) {
+            .poster-content {
+                padding: 40px;
+            }
+        }
+
+        /* Decorative Elements */
+        .poster-content::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -80px;
+            right: -80px;
+        }
+
+        @media (min-width: 768px) {
+            .poster-content::before {
+                width: 300px;
+                height: 300px;
+                top: -100px;
+                right: -100px;
+            }
+        }
+
+        .poster-content::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -40px;
+            left: -40px;
+        }
+
+        @media (min-width: 768px) {
+            .poster-content::after {
+                width: 200px;
+                height: 200px;
+                bottom: -50px;
+                left: -50px;
+            }
+        }
+
+        .poster-logo {
+            max-width: 60px;
+            max-height: 60px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            z-index: 2;
+        }
+
+        @media (min-width: 768px) {
+            .poster-logo {
+                max-width: 80px;
+                max-height: 80px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .poster-text {
+            z-index: 2;
+            position: relative;
+        }
+
+        .poster-heading {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+
+        @media (min-width: 768px) {
+            .poster-heading {
+                font-size: 2.5rem;
+                margin-bottom: 15px;
+            }
+        }
+
+        .poster-subheading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            opacity: 0.95;
+        }
+
+        @media (min-width: 768px) {
+            .poster-subheading {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+            }
+        }
+
+        .poster-description {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            line-height: 1.6;
+            opacity: 0.9;
+            max-width: 90%;
+        }
+
+        @media (min-width: 768px) {
+            .poster-description {
+                font-size: 1rem;
+                max-width: 80%;
+            }
+        }
+
+        /* CTA Button Styles */
+        .cta-button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .cta-button {
+                padding: 15px 40px;
+                font-size: 1.1rem;
+            }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Branding Styles */
+        .poster-branding {
+            margin-top: 25px;
+            z-index: 2;
+            position: relative;
+            text-align: inherit;
+        }
+
+        .brand-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            opacity: 0.95;
+        }
+
+        @media (min-width: 768px) {
+            .brand-name {
+                font-size: 1.5rem;
+            }
+        }
+
+        .brand-tagline {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        @media (min-width: 768px) {
+            .brand-tagline {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* ==================== MOBILE SPECIFIC (HIGHER PRIORITY) ==================== */
+        .poster-mobile .poster-content {
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+
+        .poster-mobile .poster-text {
+            text-align: center !important;
+            width: 100%;
+        }
+
+        .poster-mobile .poster-heading {
+            text-align: center !important;
+        }
+
+        .poster-mobile .poster-subheading {
+            text-align: center !important;
+        }
+
+        .poster-mobile .poster-description {
+            text-align: center !important;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ==================== DESKTOP SPECIFIC ==================== */
+        .poster-desktop .poster-content {
+            flex-direction: row !important;
+            padding: 25px 35px;
+            align-items: center !important;
+        }
+
+        @media (min-width: 768px) {
+            .poster-desktop .poster-content {
+                padding: 30px 50px;
+            }
+        }
+
+        .poster-desktop .poster-text {
+            flex: 1;
+            text-align: left !important;
+        }
+
+        .poster-desktop .poster-heading {
+            font-size: 1.8rem;
+            text-align: left !important;
+        }
+
+        @media (min-width: 768px) {
+            .poster-desktop .poster-heading {
+                font-size: 2.2rem;
+            }
+        }
+
+        .poster-desktop .poster-subheading {
+            font-size: 1rem;
+            text-align: left !important;
+        }
+
+        @media (min-width: 768px) {
+            .poster-desktop .poster-subheading {
+                font-size: 1.2rem;
+            }
+        }
+
+        .poster-desktop .poster-description {
+            text-align: left !important;
+        }
+
+        .poster-desktop .poster-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 768px) {
+            .poster-desktop .poster-logo {
+                top: 30px;
+                right: 30px;
+            }
+        }
+
+        /* ==================== INSTRUCTIONS SECTION ==================== */
+        .instructions {
+            max-width: 1400px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        @media (min-width: 768px) {
+            .instructions {
+                padding: 30px;
+            }
+        }
+
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        @media (min-width: 768px) {
+            .instructions h2 {
+                font-size: 22px;
+            }
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #34495e;
+            line-height: 1.8;
+            font-size: 13px;
+        }
+
+        @media (min-width: 768px) {
+            .instructions ol {
+                font-size: 14px;
+            }
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .instructions code {
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+
+        /* Theme Preview Boxes */
+        .theme-preview {
+            display: inline-block;
+            width: 80px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .theme-preview {
+                width: 100px;
+                height: 60px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .theme-preview:hover {
+            transform: scale(1.05);
+            border-color: #3498db;
+        }
+
+        .theme-preview.active {
+            border-color: #2ecc71;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Education Theme Cards */
+        .edu-theme-card {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 8px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        @media (min-width: 768px) {
+            .edu-theme-card {
+                padding: 10px;
+            }
+        }
+
+        .edu-theme-card:hover {
+            transform: translateY(-5px);
+            background: #e9ecef;
+        }
+
+        .edu-theme-card .theme-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+            margin: 0;
+        }
+
+        @media (min-width: 768px) {
+            .edu-theme-card .theme-preview {
+                height: 80px;
+            }
+        }
+
+        /* CTA Designer Section */
+        .cta-designer {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .cta-preview-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Saved Templates Grid */
+        .saved-templates-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .saved-templates-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .saved-templates-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 150px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== CONTROL PANEL ==================== -->
+    <div class="control-panel">
+        <h1>📱 Multi-Format Poster Generator</h1>
+        <p>Create professional posters for Mobile & Desktop with advanced features!</p>
+
+        <!-- FORMAT SELECTOR - NEW! -->
+        <div class="control-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+            <h3 style="color: white; margin-bottom: 15px;">🎯 Select Format to Edit</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button id="editMobileBtn" onclick="switchEditMode('mobile')" style="flex: 1; min-width: 150px; background: white; color: #667eea; border: 3px solid white; font-size: 14px; padding: 15px;">
+                    📱 Edit Mobile Poster
+                </button>
+                <button id="editDesktopBtn" onclick="switchEditMode('desktop')" style="flex: 1; min-width: 150px; background: transparent; color: white; border: 3px solid white; font-size: 14px; padding: 15px;">
+                    🖥️ Edit Desktop Poster
+                </button>
+            </div>
+            <p style="color: white; margin-top: 10px; font-size: 12px; text-align: center;">
+                <span id="editModeIndicator">Currently editing: Mobile Poster</span>
+            </p>
+        </div>
+
+        <!-- Content Editing Section -->
+        <div class="control-section">
+            <h3>📝 Edit Your Content</h3>
+
+            <label>Main Heading:</label>
+            <input type="text" id="heading" value="Top 10 Careers for 2025" placeholder="Enter your main heading" oninput="updateContent()">
+
+            <label>Subheading:</label>
+            <input type="text" id="subheading" value="Trending Opportunities for Students" placeholder="Enter your subheading" oninput="updateContent()">
+
+            <label>Description:</label>
+            <textarea id="description" placeholder="Enter description text" oninput="updateContent()">Discover the most in-demand career paths that will shape the future</textarea>
+
+            <label style="margin-top: 15px;">Quick Emoji Insert:</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; background: white; padding: 10px; border-radius: 8px;">
+                <button onclick="insertEmoji('😀')" style="font-size: 18px; padding: 6px;">😀</button>
+                <button onclick="insertEmoji('❤️')" style="font-size: 18px; padding: 6px;">❤️</button>
+                <button onclick="insertEmoji('🔥')" style="font-size: 18px; padding: 6px;">🔥</button>
+                <button onclick="insertEmoji('✨')" style="font-size: 18px; padding: 6px;">✨</button>
+                <button onclick="insertEmoji('💯')" style="font-size: 18px; padding: 6px;">💯</button>
+                <button onclick="insertEmoji('🎯')" style="font-size: 18px; padding: 6px;">🎯</button>
+                <button onclick="insertEmoji('🚀')" style="font-size: 18px; padding: 6px;">🚀</button>
+                <button onclick="insertEmoji('💪')" style="font-size: 18px; padding: 6px;">💪</button>
+                <button onclick="insertEmoji('🌟')" style="font-size: 18px; padding: 6px;">🌟</button>
+                <button onclick="insertEmoji('👍')" style="font-size: 18px; padding: 6px;">👍</button>
+                <button onclick="insertEmoji('🎉')" style="font-size: 18px; padding: 6px;">🎉</button>
+                <button onclick="insertEmoji('💰')" style="font-size: 18px; padding: 6px;">💰</button>
+                <button onclick="insertEmoji('🎁')" style="font-size: 18px; padding: 6px;">🎁</button>
+                <button onclick="insertEmoji('⚡')" style="font-size: 18px; padding: 6px;">⚡</button>
+                <button onclick="insertEmoji('📱')" style="font-size: 18px; padding: 6px;">📱</button>
+                <button onclick="insertEmoji('💡')" style="font-size: 18px; padding: 6px;">💡</button>
+                <button onclick="insertEmoji('🏆')" style="font-size: 18px; padding: 6px;">🏆</button>
+                <button onclick="insertEmoji('📚')" style="font-size: 18px; padding: 6px;">📚</button>
+                <button onclick="insertEmoji('✅')" style="font-size: 18px; padding: 6px;">✅</button>
+                <button onclick="insertEmoji('🌈')" style="font-size: 18px; padding: 6px;">🌈</button>
+            </div>
+            <p style="font-size: 11px; color: #7f8c8d; margin-top: 10px;">💡 Tip: Click emoji to insert at cursor position in heading</p>
+        </div>
+
+        <!-- BRANDING SECTION - NEW! -->
+        <div class="control-section" style="border-left: 4px solid #9b59b6;">
+            <h3>🏷️ Branding (Brand Name & Tagline)</h3>
+            <p style="color: #7f8c8d; margin-bottom: 15px; font-size: 12px;">Add your brand identity to the poster</p>
+
+            <label>
+                <input type="checkbox" id="brandingEnabled" onchange="toggleBranding()"> Enable Branding
+            </label>
+
+            <div id="brandingControls" class="hidden" style="margin-top: 15px;">
+                <label>Brand Name:</label>
+                <input type="text" id="brandName" value="" placeholder="e.g., EduGenius, TechHub, MyBrand" oninput="updateBranding()">
+
+                <label>Brand Tagline:</label>
+                <input type="text" id="brandTagline" value="" placeholder="e.g., Your Future Starts Here" oninput="updateBranding()">
+
+                <label>Brand Position:</label>
+                <select id="brandPosition" onchange="updateBranding()">
+                    <option value="below-description" selected>Below Description</option>
+                    <option value="below-cta">Below CTA Button</option>
+                    <option value="top">Top of Poster</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- CTA BUTTON DESIGNER SECTION - NEW! -->
+        <div class="control-section cta-designer">
+            <h3>🎯 Call-to-Action (CTA) Button Designer</h3>
+            <p style="color: #856404; margin-bottom: 15px; font-size: 12px;">Add a clickable button to your poster (appears below description)</p>
+
+            <label>
+                <input type="checkbox" id="ctaEnabled" onchange="toggleCTA()"> Enable CTA Button
+            </label>
+
+            <div id="ctaControls" class="hidden" style="margin-top: 15px;">
+                <label>Button Text:</label>
+                <input type="text" id="ctaText" value="Learn More" placeholder="Enter button text" oninput="updateCTA()">
+
+                <label>Button Background Color:</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="ctaBgColor" value="#ffffff" oninput="updateCTA()">
+                    <input type="text" id="ctaBgColorHex" value="#ffffff" readonly>
+                </div>
+
+                <label>Button Text Color:</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="ctaTextColor" value="#667eea" oninput="updateCTA()">
+                    <input type="text" id="ctaTextColorHex" value="#667eea" readonly>
+                </div>
+
+                <label>Button Size:</label>
+                <select id="ctaSize" onchange="updateCTA()">
+                    <option value="small">Small</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="large">Large</option>
+                </select>
+
+                <label>Button Style:</label>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                    <button onclick="applyCTAStyle('solid')">Solid</button>
+                    <button onclick="applyCTAStyle('outline')">Outline</button>
+                    <button onclick="applyCTAStyle('gradient')">Gradient</button>
+                    <button onclick="applyCTAStyle('glass')">Glass Effect</button>
+                </div>
+
+                <div class="cta-preview-box">
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Preview:</p>
+                    <button id="ctaPreview" class="cta-button" style="background: #ffffff; color: #667eea;">Learn More</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo Upload Section -->
+        <div class="control-section">
+            <h3>🎨 Upload Logo (Optional)</h3>
+            <input type="file" id="logoUpload" accept="image/*" onchange="uploadLogo(event)">
+            <button onclick="removeLogo()" class="secondary">✗ Remove Logo</button>
+        </div>
+
+        <!-- Sample Themes Section -->
+        <div class="control-section">
+            <h3>🎨 Quick Themes (Click to Apply)</h3>
+            <div>
+                <div class="theme-preview active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" onclick="applyTheme('theme1')" title="Modern Education"></div>
+                <div class="theme-preview" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" onclick="applyTheme('theme2')" title="Vibrant Beauty"></div>
+                <div class="theme-preview" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" onclick="applyTheme('theme3')" title="Ocean Blue"></div>
+                <div class="theme-preview" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);" onclick="applyTheme('theme4')" title="Fresh Green"></div>
+                <div class="theme-preview" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" onclick="applyTheme('theme5')" title="Sunset Glow"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CAROUSEL SECTION - NEW! ==================== -->
+    <div class="carousel-container">
+        <h2 style="color: #2c3e50; margin-bottom: 10px; font-size: 20px;">📚 Education Poster Templates</h2>
+        <p style="color: #7f8c8d; margin-bottom: 20px; font-size: 13px;">Swipe through trending educational themes - Click to apply</p>
+
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Carousel Item 1 -->
+                <div class="carousel-item" onclick="applyEducationTheme('studyMotivation')">
+                    <div style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        📚 Study Motivation
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Dark Academia</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Perfect for study motivation content</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 2 -->
+                <div class="carousel-item" onclick="applyEducationTheme('techCoding')">
+                    <div style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 60%, #24243e 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #00ff41; font-size: 24px;">
+                        💻 Tech/Coding
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Matrix Vibes</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Ideal for programming tutorials</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 3 -->
+                <div class="carousel-item" onclick="applyEducationTheme('colorfulNotes')">
+                    <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        🌈 Colorful Notes
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Aesthetic Study</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Beautiful notes for better retention</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 4 -->
+                <div class="carousel-item" onclick="applyEducationTheme('examSuccess')">
+                    <div style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        💯 Exam Success
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">High Energy</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Motivational exam prep content</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 5 -->
+                <div class="carousel-item" onclick="applyEducationTheme('careerPath')">
+                    <div style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        💼 Career Path
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Professional Growth</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Career guidance and opportunities</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 6 -->
+                <div class="carousel-item" onclick="applyEducationTheme('quickTips')">
+                    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        ⚡ Quick Tips
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Bold & Punchy</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Fast learning hacks</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-controls">
+            <button class="carousel-btn" onclick="moveCarousel(-1)">◄</button>
+            <button class="carousel-btn" onclick="moveCarousel(1)">►</button>
+        </div>
+
+        <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+
+    <!-- Continue with rest of control panel... -->
+    <div class="control-panel">
+        <!-- Education Themes Section -->
+        <div class="control-section" style="border-left: 4px solid #ff6b6b;">
+            <h3>📚 All Education Themes (Gen-Z Style)</h3>
+            <p style="color: #7f8c8d; margin-bottom: 15px; font-size: 12px;">✨ Perfect for students, study content, career advice & motivation</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
+                <!-- Study Motivation -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('studyMotivation')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🎓 Study Motivation</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Dark Academia</p>
+                </div>
+
+                <!-- Tech Coding -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('techCoding')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 60%, #24243e 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">💻 Tech/Coding</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Matrix Vibes</p>
+                </div>
+
+                <!-- Colorful Notes -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('colorfulNotes')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🌈 Colorful Notes</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Aesthetic Study</p>
+                </div>
+
+                <!-- Goal Tracker -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('goalTracker')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🎯 Goal Tracker</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Minimal Productivity</p>
+                </div>
+
+                <!-- Exam Success -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('examSuccess')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">💯 Exam Success</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">High Energy</p>
+                </div>
+
+                <!-- Creative Learning -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('creativeLearning')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🎨 Creative Learning</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Artistic Modern</p>
+                </div>
+
+                <!-- Quick Tips -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('quickTips')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">⚡ Quick Tips</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Bold Punchy</p>
+                </div>
+
+                <!-- Late Night Study -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('lateNightStudy')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🌙 Late Night Study</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Cozy Calm</p>
+                </div>
+
+                <!-- Career Path -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('careerPath')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">💼 Career Path</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Professional Growth</p>
+                </div>
+
+                <!-- Mindfulness Focus -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('mindfulnessFocus')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🧘 Mindfulness</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Calm Focus</p>
+                </div>
+            </div>
+
+            <p style="font-size: 10px; color: #7f8c8d; margin-top: 15px; font-style: italic;">
+                💡 Each theme includes: matching colors, fonts, and background patterns optimized for student content!
+            </p>
+        </div>
+
+        <!-- Custom Theme Creator -->
+        <div class="control-section">
+            <h3>🎨 Create Your Custom Theme</h3>
+            <p style="color: #7f8c8d; margin-bottom: 15px; font-size: 12px;">Pick colors to create your own unique design!</p>
+
+            <div class="color-group">
+                <div>
+                    <label>Primary Color (Top):</label>
+                    <div class="color-input-wrapper">
+                        <input type="color" id="primaryColor" value="#667eea">
+                        <input type="text" id="primaryColorHex" value="#667eea" readonly>
+                    </div>
+                </div>
+
+                <div>
+                    <label>Secondary Color (Bottom):</label>
+                    <div class="color-input-wrapper">
+                        <input type="color" id="secondaryColor" value="#764ba2">
+                        <input type="text" id="secondaryColorHex" value="#764ba2" readonly>
+                    </div>
+                </div>
+
+                <div>
+                    <label>Text Color:</label>
+                    <div class="color-input-wrapper">
+                        <input type="color" id="textColor" value="#ffffff">
+                        <input type="text" id="textColorHex" value="#ffffff" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="applyCustomTheme()" class="success">✓ Apply Custom Theme</button>
+            <button onclick="saveCustomTheme()" class="secondary">💾 Save This Theme</button>
+        </div>
+
+        <!-- Background Options Section -->
+        <div class="control-section">
+            <h3>🖼️ Background Options</h3>
+
+            <label>Background Type:</label>
+            <select id="backgroundType" onchange="changeBackgroundType()">
+                <option value="gradient">Gradient (Default)</option>
+                <option value="image">Upload Image</option>
+                <option value="pattern">Pattern Design</option>
+                <option value="custom">Custom CSS Code</option>
+            </select>
+
+            <!-- Image Upload (hidden by default) -->
+            <div id="bgImageSection" class="hidden">
+                <label>Upload Background Image:</label>
+                <input type="file" id="bgImageUpload" accept="image/*" onchange="uploadBackgroundImage(event)">
+                <label>Image Opacity:</label>
+                <input type="range" id="bgImageOpacity" min="0" max="100" value="100" oninput="updateBgImageOpacity(this.value)">
+                <span id="opacityValue">100%</span>
+            </div>
+
+            <!-- Pattern Selection (hidden by default) -->
+            <div id="bgPatternSection" class="hidden">
+                <label>Choose Pattern:</label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 10px;">
+                    <button onclick="applyPattern('dots')" style="padding: 6px 8px; font-size: 11px;">⚪ Dots</button>
+                    <button onclick="applyPattern('stripes')" style="padding: 6px 8px; font-size: 11px;">📐 Stripes</button>
+                    <button onclick="applyPattern('waves')" style="padding: 6px 8px; font-size: 11px;">🌊 Waves</button>
+                    <button onclick="applyPattern('circles')" style="padding: 6px 8px; font-size: 11px;">⭕ Circles</button>
+                    <button onclick="applyPattern('grid')" style="padding: 6px 8px; font-size: 11px;">📊 Grid</button>
+                    <button onclick="applyPattern('zigzag')" style="padding: 6px 8px; font-size: 11px;">⚡ Zigzag</button>
+                    <button onclick="applyPattern('hexagon')" style="padding: 6px 8px; font-size: 11px;">⬡ Hexagon</button>
+                    <button onclick="applyPattern('triangles')" style="padding: 6px 8px; font-size: 11px;">🔺 Triangles</button>
+                    <button onclick="applyPattern('crosshatch')" style="padding: 6px 8px; font-size: 11px;">✖️ Cross</button>
+                    <button onclick="applyPattern('diamonds')" style="padding: 6px 8px; font-size: 11px;">💎 Diamonds</button>
+                    <button onclick="applyPattern('bokeh')" style="padding: 6px 8px; font-size: 11px;">✨ Bokeh</button>
+                    <button onclick="applyPattern('modern')" style="padding: 6px 8px; font-size: 11px;">🎨 Modern</button>
+                    <button onclick="applyPattern('sparkle')" style="padding: 6px 8px; font-size: 11px;">⭐ Sparkle</button>
+                    <button onclick="applyPattern('organic')" style="padding: 6px 8px; font-size: 11px;">🌿 Organic</button>
+                    <button onclick="applyPattern('tech')" style="padding: 6px 8px; font-size: 11px;">💻 Tech</button>
+                </div>
+            </div>
+
+            <!-- Custom CSS Code (hidden by default) -->
+            <div id="bgCustomSection" class="hidden">
+                <label>Paste Your Custom Background CSS:</label>
+                <textarea id="customBgCode" placeholder="Example: background: linear-gradient(45deg, #ff0000, #00ff00);" style="min-height: 100px; font-family: monospace;"></textarea>
+                <button onclick="applyCustomBackground()" class="success">Apply Custom Background</button>
+            </div>
+
+            <!-- Product Showcase Elements -->
+            <div class="control-section">
+                <h3>🛍️ Product Showcase Elements (For E-commerce)</h3>
+
+                <label>Add Product Elements:</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+                    <button onclick="addProductElement('price')" class="success">💰 Price Tag</button>
+                    <button onclick="addProductElement('discount')" class="secondary">🏷️ Discount</button>
+                    <button onclick="addProductElement('new')" style="background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);">✨ NEW</button>
+                    <button onclick="addProductElement('sale')" style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);">🔥 SALE</button>
+                </div>
+
+                <div id="productElementInputs" class="hidden" style="margin-top: 15px;">
+                    <label>Price Amount:</label>
+                    <input type="text" id="priceAmount" placeholder="₹299" value="₹299">
+
+                    <label>Discount Percentage:</label>
+                    <input type="text" id="discountPercent" placeholder="50% OFF" value="50% OFF">
+
+                    <button onclick="applyProductElement()" class="success">✓ Apply to Poster</button>
+                    <button onclick="removeProductElement()" class="secondary">✗ Remove Element</button>
+                </div>
+            </div>
+
+            <button onclick="resetBackground()" class="secondary" style="margin-top: 10px;">🔄 Reset to Default</button>
+        </div>
+
+        <!-- Text Formatting Section -->
+        <div class="control-section">
+            <h3>✏️ Text Formatting Options</h3>
+
+            <label>Heading Text Color:</label>
+            <div class="color-input-wrapper">
+                <input type="color" id="headingTextColor" value="#ffffff" onchange="updateTextColor('heading', this.value)">
+                <input type="text" id="headingTextColorHex" value="#ffffff" readonly>
+            </div>
+
+            <label>Subheading Text Color:</label>
+            <div class="color-input-wrapper">
+                <input type="color" id="subheadingTextColor" value="#ffffff" onchange="updateTextColor('subheading', this.value)">
+                <input type="text" id="subheadingTextColorHex" value="#ffffff" readonly>
+            </div>
+
+            <label>Description Text Color:</label>
+            <div class="color-input-wrapper">
+                <input type="color" id="descriptionTextColor" value="#ffffff" onchange="updateTextColor('description', this.value)">
+                <input type="text" id="descriptionTextColorHex" value="#ffffff" readonly>
+            </div>
+
+            <label style="margin-top: 15px;">Font Family:</label>
+            <select id="fontFamily" onchange="changeFontFamily(this.value)">
+                <option value="'Segoe UI', sans-serif">Default (Segoe UI)</option>
+                <option value="'Poppins', sans-serif">Poppins - Modern & Clean</option>
+                <option value="'Roboto', sans-serif">Roboto - Professional</option>
+                <option value="'Montserrat', sans-serif">Montserrat - Bold & Strong</option>
+                <option value="'Playfair Display', serif">Playfair - Elegant & Classy</option>
+                <option value="'Oswald', sans-serif">Oswald - Newspaper Style</option>
+                <option value="'Lato', sans-serif">Lato - Friendly & Warm</option>
+                <option value="'Raleway', sans-serif">Raleway - Sophisticated</option>
+                <option value="'Open Sans', sans-serif">Open Sans - Simple & Clear</option>
+                <option value="'Ubuntu', sans-serif">Ubuntu - Tech & Modern</option>
+                <option value="'Bebas Neue', sans-serif">Bebas Neue - Display & Impact</option>
+                <option value="'Merriweather', serif">Merriweather - Traditional</option>
+                <option value="'Dancing Script', cursive">Dancing Script - Handwritten</option>
+                <option value="'Pacifico', cursive">Pacifico - Fun & Playful</option>
+                <option value="'Caveat', cursive">Caveat - Personal Touch</option>
+                <option value="'Righteous', sans-serif">Righteous - Retro Cool</option>
+                <option value="'Lobster', cursive">Lobster - Creative & Bold</option>
+                <option value="'Anton', sans-serif">Anton - Heavy Impact</option>
+                <option value="'Satisfy', cursive">Satisfy - Casual Script</option>
+                <option value="'Permanent Marker', cursive">Permanent Marker - Edgy</option>
+                <option value="'Indie Flower', cursive">Indie Flower - Cute & Quirky</option>
+            </select>
+
+            <label>Text Effects:</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                <button onclick="toggleTextEffect('bold')">Bold</button>
+                <button onclick="toggleTextEffect('italic')">Italic</button>
+                <button onclick="toggleTextEffect('shadow')">Shadow</button>
+                <button onclick="toggleTextEffect('outline')">Outline</button>
+                <button onclick="toggleTextEffect('glow')">Glow</button>
+            </div>
+
+            <label style="margin-top: 15px;">Quick Presets:</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                <button onclick="applyTextPreset('light')" style="background: #ffffff; color: #000; font-size: 12px; padding: 8px 15px;">Light</button>
+                <button onclick="applyTextPreset('dark')" style="background: #000000; color: #fff; font-size: 12px; padding: 8px 15px;">Dark</button>
+                <button onclick="applyTextPreset('contrast')" style="background: linear-gradient(45deg, #000, #fff); color: #fff; font-size: 12px; padding: 8px 15px;">Contrast</button>
+            </div>
+
+            <label style="margin-top: 15px;">Text Alignment:</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                <button onclick="changeAlignment('left')">⬅️ Left</button>
+                <button onclick="changeAlignment('center')">↕️ Center</button>
+                <button onclick="changeAlignment('right')">➡️ Right</button>
+            </div>
+
+            <label style="margin-top: 15px;">Text Position (Mobile):</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                <button onclick="changePosition('top')">⬆️ Top</button>
+                <button onclick="changePosition('middle')">↕️ Middle</button>
+                <button onclick="changePosition('bottom')">⬇️ Bottom</button>
+            </div>
+
+            <label style="margin-top: 15px;">Text Size:</label>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 10px;">
+                <div>
+                    <label style="font-size: 11px;">Heading Size:</label>
+                    <input type="range" id="headingSize" min="20" max="60" value="40" oninput="updateTextSize('heading', this.value)" style="width: 100%;">
+                    <span id="headingSizeValue" style="font-size: 12px;">40px</span>
+                </div>
+                <div>
+                    <label style="font-size: 11px;">Subheading Size:</label>
+                    <input type="range" id="subheadingSize" min="15" max="40" value="20" oninput="updateTextSize('subheading', this.value)" style="width: 100%;">
+                    <span id="subheadingSizeValue" style="font-size: 12px;">20px</span>
+                </div>
+                <div>
+                    <label style="font-size: 11px;">Description Size:</label>
+                    <input type="range" id="descriptionSize" min="12" max="30" value="16" oninput="updateTextSize('description', this.value)" style="width: 100%;">
+                    <span id="descriptionSizeValue" style="font-size: 12px;">16px</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="control-section">
+            <h3>⬇️ Download Your Posters</h3>
+            <div class="button-group">
+                <button onclick="downloadPoster('mobile')" class="download">📱 Download Mobile (1080x1920)</button>
+                <button onclick="downloadPoster('desktop')" class="download">🖥️ Download Desktop (1920x1080)</button>
+                <button onclick="downloadBoth()" class="download">📦 Download Both</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== POSTER PREVIEWS ==================== -->
+    <div class="preview-container">
+        <!-- Mobile Format -->
+        <div class="format-section">
+            <h2>📱 Instagram Reels / Story Format (1080x1920)</h2>
+            <p style="text-align: center; color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Perfect for Instagram Reels, Stories & TikTok</p>
+            <div class="poster-wrapper">
+                <div class="poster poster-mobile" id="posterMobile">
+                    <div class="poster-content">
+                        <img class="poster-logo hidden" id="logoMobile" src="" alt="Logo">
+                        <div class="poster-text">
+                            <div id="brandingTopMobile" class="poster-branding hidden"></div>
+                            <h1 class="poster-heading" id="headingMobile">Top 10 Careers for 2025</h1>
+                            <h2 class="poster-subheading" id="subheadingMobile">Trending Opportunities for Students</h2>
+                            <p class="poster-description" id="descriptionMobile">Discover the most in-demand career paths that will shape the future</p>
+                            <div id="brandingBelowDescMobile" class="poster-branding hidden"></div>
+                            <button class="cta-button hidden" id="ctaMobile">Learn More</button>
+                            <div id="brandingBelowCTAMobile" class="poster-branding hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Format -->
+        <div class="format-section">
+            <h2>🖥️ Desktop Format (Landscape / Website Banner)</h2>
+            <div class="poster-wrapper">
+                <div class="poster poster-desktop" id="posterDesktop">
+                    <div class="poster-content">
+                        <img class="poster-logo hidden" id="logoDesktop" src="" alt="Logo">
+                        <div class="poster-text">
+                            <div id="brandingTopDesktop" class="poster-branding hidden"></div>
+                            <h1 class="poster-heading" id="headingDesktop">Top 10 Careers for 2025</h1>
+                            <h2 class="poster-subheading" id="subheadingDesktop">Trending Opportunities for Students</h2>
+                            <p class="poster-description" id="descriptionDesktop">Discover the most in-demand career paths that will shape the future</p>
+                            <div id="brandingBelowDescDesktop" class="poster-branding hidden"></div>
+                            <button class="cta-button hidden" id="ctaDesktop">Learn More</button>
+                            <div id="brandingBelowCTADesktop" class="poster-branding hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== INSTRUCTIONS ==================== -->
+    <div class="instructions">
+        <h2>📖 How to Use This Tool</h2>
+        <ol>
+            <li><strong>Edit Content:</strong> Change heading, subheading, and description</li>
+            <li><strong>Add Branding:</strong> Enable and add your brand name and tagline</li>
+            <li><strong>Add CTA Button:</strong> Enable and customize your call-to-action button (appears below description)</li>
+            <li><strong>Add Logo:</strong> Upload your logo (optional)</li>
+            <li><strong>Choose Theme:</strong> Browse carousel or click themes to apply instantly</li>
+            <li><strong>Customize Background:</strong> Upload images, use patterns, or add custom CSS</li>
+            <li><strong>Format Text:</strong> Change colors, size, alignment, and effects</li>
+            <li><strong>Download:</strong> Save as high-quality images (1080x1920 for mobile, 1920x1080 for desktop)</li>
+        </ol>
+
+        <h2 style="margin-top: 30px;">✅ New Features Added</h2>
+        <ul style="list-style: none; margin-left: 0;">
+            <li>✓ Fully responsive design - works perfectly on mobile and desktop</li>
+            <li>✓ Carousel feature for browsing education templates</li>
+            <li>✓ Enhanced education-based poster themes</li>
+            <li>✓ CTA button designer - button appears below description for better visibility</li>
+            <li>✓ Branding section - add brand name and tagline with flexible positioning</li>
+            <li>✓ Mobile-optimized controls and settings</li>
+            <li>✓ Touch-friendly interface for all devices</li>
+        </ul>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ==================== EDIT MODE MANAGEMENT ====================
+        let currentEditMode = 'mobile'; // 'mobile' or 'desktop'
+
+        function switchEditMode(mode) {
+            currentEditMode = mode;
+
+            // Update button styles
+            const mobileBtn = document.getElementById('editMobileBtn');
+            const desktopBtn = document.getElementById('editDesktopBtn');
+            const indicator = document.getElementById('editModeIndicator');
+
+            if (mode === 'mobile') {
+                mobileBtn.style.background = 'white';
+                mobileBtn.style.color = '#667eea';
+                desktopBtn.style.background = 'transparent';
+                desktopBtn.style.color = 'white';
+                indicator.textContent = 'Currently editing: Mobile Poster 📱';
+            } else {
+                desktopBtn.style.background = 'white';
+                desktopBtn.style.color = '#667eea';
+                mobileBtn.style.background = 'transparent';
+                mobileBtn.style.color = 'white';
+                indicator.textContent = 'Currently editing: Desktop Poster 🖥️';
+            }
+
+            // Load content from the selected format
+            loadContentFromPoster(mode);
+
+            showNotification(`✓ Switched to ${mode === 'mobile' ? 'Mobile' : 'Desktop'} editing mode`);
+        }
+
+        function loadContentFromPoster(mode) {
+            // Load content from the poster being edited
+            const suffix = mode === 'mobile' ? 'Mobile' : 'Desktop';
+
+            const heading = document.getElementById('heading' + suffix).textContent;
+            const subheading = document.getElementById('subheading' + suffix).textContent;
+            const description = document.getElementById('description' + suffix).textContent;
+
+            document.getElementById('heading').value = heading;
+            document.getElementById('subheading').value = subheading;
+            document.getElementById('description').value = description;
+        }
+
+        function getEditTarget() {
+            // Returns 'Mobile' or 'Desktop' based on current edit mode
+            return currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+        }
+
+        // ==================== CAROUSEL FUNCTIONALITY ====================
+        let currentSlide = 0;
+        const totalSlides = 6;
+
+        function initializeCarousel() {
+            const dotsContainer = document.getElementById('carouselDots');
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+            updateCarousel();
+        }
+
+        function moveCarousel(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            if (currentSlide >= totalSlides) currentSlide = 0;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const dots = document.querySelectorAll('.carousel-dot');
+
+            // Calculate slides to show based on screen width
+            const slidesToShow = window.innerWidth >= 768 ? 3 : 1;
+            const slideWidth = 100 / slidesToShow;
+            const offset = currentSlide * slideWidth;
+
+            track.style.transform = `translateX(-${offset}%)`;
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        // Auto-play carousel
+        setInterval(() => {
+            moveCarousel(1);
+        }, 5000);
+
+        window.addEventListener('resize', updateCarousel);
+        document.addEventListener('DOMContentLoaded', initializeCarousel);
+
+        // ==================== BRANDING FUNCTIONALITY ====================
+        function toggleBranding() {
+            const enabled = document.getElementById('brandingEnabled').checked;
+            const controls = document.getElementById('brandingControls');
+
+            if (enabled) {
+                controls.classList.remove('hidden');
+                updateBranding();
+            } else {
+                controls.classList.add('hidden');
+                // Hide all branding elements
+                ['Top', 'BelowDesc', 'BelowCTA'].forEach(pos => {
+                    document.getElementById(`branding${pos}Mobile`).classList.add('hidden');
+                    document.getElementById(`branding${pos}Desktop`).classList.add('hidden');
+                });
+            }
+        }
+
+        function updateBranding() {
+            const brandName = document.getElementById('brandName').value;
+            const brandTagline = document.getElementById('brandTagline').value;
+            const position = document.getElementById('brandPosition').value;
+            const target = getEditTarget();
+
+            // Hide all branding containers for selected format
+            ['Top', 'BelowDesc', 'BelowCTA'].forEach(pos => {
+                document.getElementById(`branding${pos}${target}`).classList.add('hidden');
+            });
+
+            // If no brand name, don't show anything
+            if (!brandName.trim()) return;
+
+            // Create branding HTML
+            let brandHTML = '';
+            if (brandName.trim()) {
+                brandHTML += `<div class="brand-name">${brandName}</div>`;
+            }
+            if (brandTagline.trim()) {
+                brandHTML += `<div class="brand-tagline">${brandTagline}</div>`;
+            }
+
+            // Determine which containers to show based on position
+            let containerSuffix = '';
+            if (position === 'top') {
+                containerSuffix = 'Top';
+            } else if (position === 'below-description') {
+                containerSuffix = 'BelowDesc';
+            } else if (position === 'below-cta') {
+                containerSuffix = 'BelowCTA';
+            }
+
+            // Update selected format only
+            const container = document.getElementById(`branding${containerSuffix}${target}`);
+            container.innerHTML = brandHTML;
+            container.classList.remove('hidden');
+        }
+
+        // ==================== CTA BUTTON FUNCTIONALITY ====================
+        function toggleCTA() {
+            const enabled = document.getElementById('ctaEnabled').checked;
+            const controls = document.getElementById('ctaControls');
+            const target = getEditTarget();
+            const ctaButton = document.getElementById('cta' + target);
+
+            if (enabled) {
+                controls.classList.remove('hidden');
+                ctaButton.classList.remove('hidden');
+                updateCTA();
+            } else {
+                controls.classList.add('hidden');
+                ctaButton.classList.add('hidden');
+            }
+        }
+
+        function updateCTA() {
+            const text = document.getElementById('ctaText').value;
+            const bgColor = document.getElementById('ctaBgColor').value;
+            const textColor = document.getElementById('ctaTextColor').value;
+            const size = document.getElementById('ctaSize').value;
+            const target = getEditTarget();
+
+            const ctaButton = document.getElementById('cta' + target);
+            const ctaPreview = document.getElementById('ctaPreview');
+
+            [ctaButton, ctaPreview].forEach(btn => {
+                btn.textContent = text;
+                btn.style.background = bgColor;
+                btn.style.color = textColor;
+
+                // Size
+                if (size === 'small') {
+                    btn.style.padding = '8px 20px';
+                    btn.style.fontSize = '0.9rem';
+                } else if (size === 'large') {
+                    btn.style.padding = '18px 50px';
+                    btn.style.fontSize = '1.3rem';
+                } else {
+                    btn.style.padding = '12px 30px';
+                    btn.style.fontSize = '1rem';
+                }
+
+                // CTA button stays in flow (below description) - no absolute positioning
+                btn.style.position = 'relative';
+                btn.style.transform = 'none';
+            });
+
+            // Update color hex displays
+            document.getElementById('ctaBgColorHex').value = bgColor;
+            document.getElementById('ctaTextColorHex').value = textColor;
+        }
+
+        function applyCTAStyle(style) {
+            const bgColor = document.getElementById('ctaBgColor').value;
+            const textColor = document.getElementById('ctaTextColor').value;
+            const target = getEditTarget();
+
+            const ctaButton = document.getElementById('cta' + target);
+            const ctaPreview = document.getElementById('ctaPreview');
+
+            [ctaButton, ctaPreview].forEach(btn => {
+                if (style === 'solid') {
+                    btn.style.background = bgColor;
+                    btn.style.border = 'none';
+                    btn.style.backdropFilter = 'none';
+                } else if (style === 'outline') {
+                    btn.style.background = 'transparent';
+                    btn.style.border = `3px solid ${bgColor}`;
+                    btn.style.color = bgColor;
+                    btn.style.backdropFilter = 'none';
+                } else if (style === 'gradient') {
+                    btn.style.background = `linear-gradient(135deg, ${bgColor} 0%, ${textColor} 100%)`;
+                    btn.style.color = '#ffffff';
+                    btn.style.border = 'none';
+                    btn.style.backdropFilter = 'none';
+                } else if (style === 'glass') {
+                    btn.style.background = 'rgba(255, 255, 255, 0.2)';
+                    btn.style.backdropFilter = 'blur(10px)';
+                    btn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+                    btn.style.color = '#ffffff';
+                }
+            });
+
+            showNotification(`✓ ${style} style applied to ${currentEditMode} CTA!`);
+        }
+
+        // Update content function - only updates the currently selected format
+        function updateContent() {
+            const heading = document.getElementById('heading').value;
+            const subheading = document.getElementById('subheading').value;
+            const description = document.getElementById('description').value;
+
+            const target = getEditTarget();
+
+            document.getElementById('heading' + target).textContent = heading;
+            document.getElementById('subheading' + target).textContent = subheading;
+            document.getElementById('description' + target).textContent = description;
+        }
+
+        // Logo upload function - applies to selected format only
+        function uploadLogo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const target = getEditTarget();
+                    const logo = document.getElementById('logo' + target);
+                    logo.src = e.target.result;
+                    logo.classList.remove('hidden');
+                    showNotification(`✓ Logo uploaded to ${currentEditMode} poster!`);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Remove logo function - removes from selected format only
+        function removeLogo() {
+            const target = getEditTarget();
+            const logo = document.getElementById('logo' + target);
+            logo.classList.add('hidden');
+            logo.src = '';
+            document.getElementById('logoUpload').value = '';
+            showNotification(`✓ Logo removed from ${currentEditMode} poster`);
+        }
+
+        // Predefined themes
+        const themes = {
+            theme1: { primary: '#667eea', secondary: '#764ba2', text: '#ffffff' },
+            theme2: { primary: '#f093fb', secondary: '#f5576c', text: '#ffffff' },
+            theme3: { primary: '#4facfe', secondary: '#00f2fe', text: '#ffffff' },
+            theme4: { primary: '#43e97b', secondary: '#38f9d7', text: '#ffffff' },
+            theme5: { primary: '#fa709a', secondary: '#fee140', text: '#ffffff' }
+        };
+
+        // Apply predefined theme
+        function applyTheme(themeId) {
+            const theme = themes[themeId];
+            document.documentElement.style.setProperty('--primary-color', theme.primary);
+            document.documentElement.style.setProperty('--secondary-color', theme.secondary);
+            document.documentElement.style.setProperty('--text-color', theme.text);
+
+            document.getElementById('primaryColor').value = theme.primary;
+            document.getElementById('primaryColorHex').value = theme.primary;
+            document.getElementById('secondaryColor').value = theme.secondary;
+            document.getElementById('secondaryColorHex').value = theme.secondary;
+            document.getElementById('textColor').value = theme.text;
+            document.getElementById('textColorHex').value = theme.text;
+
+            document.querySelectorAll('.theme-preview').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+
+            showNotification('✓ Theme applied!');
+        }
+
+        // ==================== EDUCATION THEMES FUNCTION ====================
+        function applyEducationTheme(themeName) {
+            let themeConfig = {};
+
+            switch(themeName) {
+                case 'studyMotivation':
+                    themeConfig = {
+                        primary: '#2c3e50',
+                        secondary: '#34495e',
+                        text: '#ecf0f1',
+                        font: "'Merriweather', serif",
+                        pattern: 'grid',
+                        emoji: '📚',
+                        sample: {
+                            heading: 'Study Smart, Not Hard 📚',
+                            subheading: 'Proven Techniques for Better Results',
+                            description: 'Master your study routine with these evidence-based strategies'
+                        }
+                    };
+                    break;
+
+                case 'techCoding':
+                    themeConfig = {
+                        primary: '#0f0c29',
+                        secondary: '#302b63',
+                        text: '#00ff41',
+                        font: "'Ubuntu', sans-serif",
+                        pattern: 'tech',
+                        emoji: '💻',
+                        sample: {
+                            heading: 'Learn Coding in 2025 💻',
+                            subheading: 'Top Programming Languages to Master',
+                            description: 'Start your tech career with these essential skills'
+                        }
+                    };
+                    break;
+
+                case 'colorfulNotes':
+                    themeConfig = {
+                        primary: '#ff9a9e',
+                        secondary: '#fecfef',
+                        text: '#ffffff',
+                        font: "'Caveat', cursive",
+                        pattern: 'dots',
+                        emoji: '🌸',
+                        sample: {
+                            heading: 'Make Notes Fun! 🌸✨',
+                            subheading: 'Aesthetic Study Tips',
+                            description: 'Beautiful notes = Better memory retention'
+                        }
+                    };
+                    break;
+
+                case 'goalTracker':
+                    themeConfig = {
+                        primary: '#f5f7fa',
+                        secondary: '#c3cfe2',
+                        text: '#2c3e50',
+                        font: "'Roboto', sans-serif",
+                        pattern: 'grid',
+                        emoji: '✅',
+                        sample: {
+                            heading: '2025 Goals Checklist ✅',
+                            subheading: 'Track Your Progress Daily',
+                            description: 'Small steps lead to big achievements'
+                        }
+                    };
+                    break;
+
+                case 'examSuccess':
+                    themeConfig = {
+                        primary: '#f12711',
+                        secondary: '#f5af19',
+                        text: '#ffffff',
+                        font: "'Anton', sans-serif",
+                        pattern: 'stripes',
+                        emoji: '🔥',
+                        sample: {
+                            heading: 'ACE YOUR EXAMS! 🔥',
+                            subheading: 'Last-Minute Study Hacks',
+                            description: 'Maximize your score with these proven tips'
+                        }
+                    };
+                    break;
+
+                case 'creativeLearning':
+                    themeConfig = {
+                        primary: '#667eea',
+                        secondary: '#764ba2',
+                        text: '#ffffff',
+                        font: "'Poppins', sans-serif",
+                        pattern: 'bokeh',
+                        emoji: '🎨',
+                        sample: {
+                            heading: 'Think Outside the Box 🎨',
+                            subheading: 'Creative Problem Solving',
+                            description: 'Innovation starts with curiosity'
+                        }
+                    };
+                    break;
+
+                case 'quickTips':
+                    themeConfig = {
+                        primary: '#ff6a00',
+                        secondary: '#ee0979',
+                        text: '#ffffff',
+                        font: "'Bebas Neue', sans-serif",
+                        pattern: 'modern',
+                        emoji: '⚡',
+                        sample: {
+                            heading: 'QUICK STUDY TIP ⚡',
+                            subheading: 'Pomodoro Technique Explained',
+                            description: '25 mins focus + 5 mins break = Maximum productivity'
+                        }
+                    };
+                    break;
+
+                case 'lateNightStudy':
+                    themeConfig = {
+                        primary: '#1e3c72',
+                        secondary: '#2a5298',
+                        text: '#e0e7ff',
+                        font: "'Lato', sans-serif",
+                        pattern: 'organic',
+                        emoji: '🌙',
+                        sample: {
+                            heading: 'Night Owl Study Session 🌙',
+                            subheading: 'Tips for Late Night Studying',
+                            description: 'Stay focused and energized during midnight study hours'
+                        }
+                    };
+                    break;
+
+                case 'careerPath':
+                    themeConfig = {
+                        primary: '#134e5e',
+                        secondary: '#71b280',
+                        text: '#ffffff',
+                        font: "'Montserrat', sans-serif",
+                        pattern: 'grid',
+                        emoji: '💼',
+                        sample: {
+                            heading: 'Your Career Roadmap 💼',
+                            subheading: 'Top 10 Careers for 2025',
+                            description: 'Explore high-growth opportunities in emerging fields'
+                        }
+                    };
+                    break;
+
+                case 'mindfulnessFocus':
+                    themeConfig = {
+                        primary: '#89f7fe',
+                        secondary: '#66a6ff',
+                        text: '#ffffff',
+                        font: "'Open Sans', sans-serif",
+                        pattern: 'waves',
+                        emoji: '🧘',
+                        sample: {
+                            heading: 'Study Mindfully 🧘✨',
+                            subheading: 'Reduce Stress, Boost Focus',
+                            description: 'Balance your mental health while achieving academic success'
+                        }
+                    };
+                    break;
+            }
+
+            // Apply colors
+            document.documentElement.style.setProperty('--primary-color', themeConfig.primary);
+            document.documentElement.style.setProperty('--secondary-color', themeConfig.secondary);
+            document.documentElement.style.setProperty('--text-color', themeConfig.text);
+
+            // Update color inputs
+            document.getElementById('primaryColor').value = themeConfig.primary;
+            document.getElementById('primaryColorHex').value = themeConfig.primary;
+            document.getElementById('secondaryColor').value = themeConfig.secondary;
+            document.getElementById('secondaryColorHex').value = themeConfig.secondary;
+            document.getElementById('textColor').value = themeConfig.text;
+            document.getElementById('textColorHex').value = themeConfig.text;
+
+            // Apply font
+            changeFontFamily(themeConfig.font);
+
+            // Apply pattern
+            applyPattern(themeConfig.pattern);
+
+            // Update content with sample text (optional)
+            const useSample = confirm(`Apply sample content for "${themeName}"?\n\nClick OK to use sample text, or Cancel to keep your current text.`);
+
+            if (useSample) {
+                document.getElementById('heading').value = themeConfig.sample.heading;
+                document.getElementById('subheading').value = themeConfig.sample.subheading;
+                document.getElementById('description').value = themeConfig.sample.description;
+                updateContent();
+            }
+
+            // Remove active state from all themes
+            document.querySelectorAll('.theme-preview').forEach(el => el.classList.remove('active'));
+
+            showNotification(`✓ ${themeName} theme applied! ${themeConfig.emoji}`);
+        }
+
+        // Apply custom theme
+        function applyCustomTheme() {
+            const primary = document.getElementById('primaryColor').value;
+            const secondary = document.getElementById('secondaryColor').value;
+            const text = document.getElementById('textColor').value;
+
+            document.documentElement.style.setProperty('--primary-color', primary);
+            document.documentElement.style.setProperty('--secondary-color', secondary);
+            document.documentElement.style.setProperty('--text-color', text);
+
+            document.getElementById('primaryColorHex').value = primary;
+            document.getElementById('secondaryColorHex').value = secondary;
+            document.getElementById('textColorHex').value = text;
+
+            document.querySelectorAll('.theme-preview').forEach(el => el.classList.remove('active'));
+
+            showNotification('✓ Custom theme applied!');
+        }
+
+        // Save custom theme
+        function saveCustomTheme() {
+            const primary = document.getElementById('primaryColor').value;
+            const secondary = document.getElementById('secondaryColor').value;
+            const text = document.getElementById('textColor').value;
+
+            const themeData = `Primary: ${primary}\nSecondary: ${secondary}\nText: ${text}`;
+
+            navigator.clipboard.writeText(themeData).then(() => {
+                showNotification('✓ Theme colors copied to clipboard!');
+            });
+        }
+
+        // Update color hex displays
+        document.getElementById('primaryColor').addEventListener('input', (e) => {
+            document.getElementById('primaryColorHex').value = e.target.value;
+        });
+        document.getElementById('secondaryColor').addEventListener('input', (e) => {
+            document.getElementById('secondaryColorHex').value = e.target.value;
+        });
+        document.getElementById('textColor').addEventListener('input', (e) => {
+            document.getElementById('textColorHex').value = e.target.value;
+        });
+
+        // CTA color updates
+        document.getElementById('ctaBgColor').addEventListener('input', (e) => {
+            document.getElementById('ctaBgColorHex').value = e.target.value;
+        });
+        document.getElementById('ctaTextColor').addEventListener('input', (e) => {
+            document.getElementById('ctaTextColorHex').value = e.target.value;
+        });
+
+        // ==================== BACKGROUND FUNCTIONS ====================
+        function changeBackgroundType() {
+            const type = document.getElementById('backgroundType').value;
+
+            document.getElementById('bgImageSection').classList.add('hidden');
+            document.getElementById('bgPatternSection').classList.add('hidden');
+            document.getElementById('bgCustomSection').classList.add('hidden');
+
+            if (type === 'image') {
+                document.getElementById('bgImageSection').classList.remove('hidden');
+            } else if (type === 'pattern') {
+                document.getElementById('bgPatternSection').classList.remove('hidden');
+            } else if (type === 'custom') {
+                document.getElementById('bgCustomSection').classList.remove('hidden');
+            } else if (type === 'gradient') {
+                resetBackground();
+            }
+        }
+
+        function uploadBackgroundImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    applyBackgroundImage(e.target.result);
+                    showNotification('✓ Background image uploaded!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function applyBackgroundImage(imageUrl) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const posterContent = document.querySelector(`#poster${target} .poster-content`);
+            const opacity = document.getElementById('bgImageOpacity').value / 100;
+
+            posterContent.style.backgroundImage = `url('${imageUrl}')`;
+            posterContent.style.backgroundSize = 'cover';
+            posterContent.style.backgroundPosition = 'center';
+            posterContent.style.backgroundRepeat = 'no-repeat';
+            posterContent.style.opacity = opacity;
+        }
+
+        function updateBgImageOpacity(value) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const posterContent = document.querySelector(`#poster${target} .poster-content`);
+
+            document.getElementById('opacityValue').textContent = value + '%';
+            posterContent.style.opacity = value / 100;
+        }
+
+        // Apply pattern designs (EXPANDED VERSION)
+        function applyPattern(patternType) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const posterContent = document.querySelector(`#poster${target} .poster-content`);
+
+            let patternStyle = '';
+
+            switch(patternType) {
+                case 'dots':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+                        background-size: 20px 20px;
+                    `;
+                    break;
+                case 'stripes':
+                    patternStyle = `
+                        background: repeating-linear-gradient(
+                            45deg,
+                            var(--primary-color),
+                            var(--primary-color) 10px,
+                            var(--secondary-color) 10px,
+                            var(--secondary-color) 20px
+                        );
+                    `;
+                    break;
+                case 'waves':
+                    patternStyle = `
+                        background: var(--primary-color);
+                        background-image:
+                            repeating-radial-gradient(circle at 0 0, transparent 0, var(--secondary-color) 40px),
+                            repeating-linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+                    `;
+                    break;
+                case 'circles':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image: radial-gradient(circle, var(--secondary-color) 25%, transparent 25%),
+                                          radial-gradient(circle, var(--secondary-color) 25%, transparent 25%);
+                        background-size: 60px 60px;
+                        background-position: 0 0, 30px 30px;
+                    `;
+                    break;
+                case 'grid':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image:
+                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+                        background-size: 30px 30px;
+                    `;
+                    break;
+                case 'zigzag':
+                    patternStyle = `
+                        background: linear-gradient(135deg, var(--primary-color) 25%, transparent 25%),
+                                    linear-gradient(225deg, var(--primary-color) 25%, transparent 25%),
+                                    linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%),
+                                    linear-gradient(315deg, var(--secondary-color) 25%, var(--primary-color) 25%);
+                        background-size: 40px 40px;
+                        background-position: 0 0, 20px 0, 20px -20px, 0 0;
+                    `;
+                    break;
+                case 'hexagon':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image:
+                            linear-gradient(30deg, var(--secondary-color) 12%, transparent 12.5%, transparent 87%, var(--secondary-color) 87.5%, var(--secondary-color)),
+                            linear-gradient(150deg, var(--secondary-color) 12%, transparent 12.5%, transparent 87%, var(--secondary-color) 87.5%, var(--secondary-color)),
+                            linear-gradient(30deg, var(--secondary-color) 12%, transparent 12.5%, transparent 87%, var(--secondary-color) 87.5%, var(--secondary-color)),
+                            linear-gradient(150deg, var(--secondary-color) 12%, transparent 12.5%, transparent 87%, var(--secondary-color) 87.5%, var(--secondary-color));
+                        background-size: 80px 140px;
+                        background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+                    `;
+                    break;
+                case 'triangles':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image:
+                            linear-gradient(45deg, var(--secondary-color) 50%, transparent 50%);
+                        background-size: 40px 40px;
+                    `;
+                    break;
+                case 'crosshatch':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image:
+                            repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px),
+                            repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
+                    `;
+                    break;
+                case 'diamonds':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image:
+                            linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%, transparent 75%, var(--secondary-color) 75%),
+                            linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%, transparent 75%, var(--secondary-color) 75%);
+                        background-size: 40px 40px;
+                        background-position: 0 0, 20px 20px;
+                    `;
+                    break;
+                case 'bokeh':
+                    patternStyle = `
+                        background: var(--primary-color);
+                        background-image:
+                            radial-gradient(circle, rgba(255,255,255,0.3) 20%, transparent 20%),
+                            radial-gradient(circle, rgba(255,255,255,0.2) 15%, transparent 15%),
+                            radial-gradient(circle, rgba(255,255,255,0.25) 25%, transparent 25%);
+                        background-size: 100px 100px, 80px 80px, 120px 120px;
+                        background-position: 0 0, 50px 50px, 25px 75px;
+                    `;
+                    break;
+                case 'modern':
+                    patternStyle = `
+                        background: linear-gradient(var(--primary-color), var(--secondary-color));
+                        background-image:
+                            linear-gradient(30deg, rgba(255,255,255,0.1) 50%, transparent 50%),
+                            linear-gradient(150deg, rgba(255,255,255,0.05) 50%, transparent 50%);
+                        background-size: 200px 200px, 150px 150px;
+                    `;
+                    break;
+                case 'sparkle':
+                    patternStyle = `
+                        background: var(--primary-color);
+                        background-image:
+                            radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px),
+                            radial-gradient(circle, rgba(255,255,255,0.6) 2px, transparent 2px),
+                            radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
+                        background-size: 50px 50px, 80px 80px, 100px 100px;
+                        background-position: 0 0, 25px 25px, 50px 10px;
+                    `;
+                    break;
+                case 'organic':
+                    patternStyle = `
+                        background: var(--primary-color);
+                        background-image:
+                            radial-gradient(ellipse at top left, rgba(255,255,255,0.2) 0%, transparent 50%),
+                            radial-gradient(ellipse at bottom right, rgba(255,255,255,0.15) 0%, transparent 50%),
+                            radial-gradient(ellipse at center, var(--secondary-color) 0%, transparent 70%);
+                        background-size: 400px 400px, 300px 300px, 500px 500px;
+                        background-position: 0 0, 100% 100%, 50% 50%;
+                    `;
+                    break;
+                case 'tech':
+                    patternStyle = `
+                        background-color: var(--primary-color);
+                        background-image:
+                            linear-gradient(rgba(255,255,255,0.05) 2px, transparent 2px),
+                            linear-gradient(90deg, rgba(255,255,255,0.05) 2px, transparent 2px),
+                            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+                        background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+                        background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+                    `;
+                    break;
+            }
+
+            posterContent.style.cssText = patternStyle;
+
+            showNotification(`✓ ${patternType} pattern applied to ${currentEditMode} poster!`);
+        }
+
+        function applyCustomBackground() {
+            const customCode = document.getElementById('customBgCode').value;
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const posterContent = document.querySelector(`#poster${target} .poster-content`);
+
+            if (customCode.trim()) {
+                posterContent.style.cssText = customCode;
+                showNotification(`✓ Custom background applied to ${currentEditMode} poster!`);
+            } else {
+                alert('Please enter CSS code first!');
+            }
+        }
+
+        function resetBackground() {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const posterContent = document.querySelector(`#poster${target} .poster-content`);
+
+            posterContent.style.cssText = '';
+            posterContent.style.background = `linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)`;
+            document.getElementById('backgroundType').value = 'gradient';
+            showNotification(`✓ ${currentEditMode} poster background reset to default!`);
+        }
+
+        // ==================== TEXT FORMATTING FUNCTIONS ====================
+        function updateTextColor(element, color) {
+            const target = getEditTarget();
+            const el = document.getElementById(element + target);
+            el.style.color = color;
+
+            document.getElementById(element + 'TextColorHex').value = color;
+            showNotification(`✓ ${element} color updated for ${currentEditMode} poster!`);
+        }
+
+        let activeEffects = {
+            bold: false,
+            italic: false,
+            shadow: false,
+            outline: false,
+            glow: false
+        };
+
+        function toggleTextEffect(effect) {
+            activeEffects[effect] = !activeEffects[effect];
+            applyAllTextEffects();
+            showNotification(`✓ ${effect} ${activeEffects[effect] ? 'enabled' : 'disabled'}!`);
+        }
+
+        function applyAllTextEffects() {
+            const target = getEditTarget();
+            const heading = document.getElementById('heading' + target);
+
+            heading.style.fontWeight = activeEffects.bold ? '900' : '800';
+            heading.style.fontStyle = activeEffects.italic ? 'italic' : 'normal';
+
+            let textShadow = [];
+            if (activeEffects.shadow) {
+                textShadow.push('2px 2px 10px rgba(0,0,0,0.5)');
+            }
+            if (activeEffects.outline) {
+                textShadow.push('-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000');
+            }
+            if (activeEffects.glow) {
+                textShadow.push('0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.6)');
+            }
+
+            heading.style.textShadow = textShadow.join(', ') || '2px 2px 10px rgba(0,0,0,0.2)';
+        }
+
+        // ==================== ALIGNMENT & POSITION ====================
+        function changeAlignment(alignment) {
+            const format = currentEditMode;
+            const formatId = format === 'mobile' ? 'Mobile' : 'Desktop';
+
+            const posterText = document.querySelector(`#poster${formatId} .poster-text`);
+            const heading = document.getElementById('heading' + formatId);
+            const subheading = document.getElementById('subheading' + formatId);
+            const description = document.getElementById('description' + formatId);
+            const content = document.querySelector(`#poster${formatId} .poster-content`);
+
+            posterText.style.textAlign = alignment;
+            heading.style.textAlign = alignment;
+            subheading.style.textAlign = alignment;
+            description.style.textAlign = alignment;
+            content.style.alignItems = alignment === 'left' ? 'flex-start' : alignment === 'right' ? 'flex-end' : 'center';
+
+            showNotification(`✓ ${format} poster aligned to ${alignment}!`);
+        }
+
+        function changePosition(position) {
+            const mobileContent = document.querySelector('#posterMobile .poster-content');
+
+            switch(position) {
+                case 'top':
+                    mobileContent.style.justifyContent = 'flex-start';
+                    mobileContent.style.paddingTop = '60px';
+                    mobileContent.style.paddingBottom = '40px';
+                    break;
+                case 'middle':
+                    mobileContent.style.justifyContent = 'center';
+                    mobileContent.style.paddingTop = '40px';
+                    mobileContent.style.paddingBottom = '40px';
+                    break;
+                case 'bottom':
+                    mobileContent.style.justifyContent = 'flex-end';
+                    mobileContent.style.paddingTop = '40px';
+                    mobileContent.style.paddingBottom = '60px';
+                    break;
+            }
+
+            showNotification(`✓ Text positioned at ${position}!`);
+        }
+
+        function updateTextSize(element, size) {
+            const target = getEditTarget();
+            const el = document.getElementById(element + target);
+            el.style.fontSize = size + 'px';
+
+            document.getElementById(element + 'SizeValue').textContent = size + 'px';
+        }
+
+        function applyTextPreset(preset) {
+            let headingColor, subheadingColor, descriptionColor;
+
+            switch(preset) {
+                case 'light':
+                    headingColor = '#ffffff';
+                    subheadingColor = '#ffffff';
+                    descriptionColor = '#ffffff';
+                    break;
+                case 'dark':
+                    headingColor = '#000000';
+                    subheadingColor = '#333333';
+                    descriptionColor = '#555555';
+                    break;
+                case 'contrast':
+                    headingColor = '#ffff00';
+                    subheadingColor = '#ffffff';
+                    descriptionColor = '#ffffff';
+                    break;
+            }
+
+            updateTextColor('heading', headingColor);
+            updateTextColor('subheading', subheadingColor);
+            updateTextColor('description', descriptionColor);
+
+            document.getElementById('headingTextColor').value = headingColor;
+            document.getElementById('subheadingTextColor').value = subheadingColor;
+            document.getElementById('descriptionTextColor').value = descriptionColor;
+
+            showNotification(`✓ ${preset} preset applied!`);
+        }
+
+        // ==================== FONT CHANGE FUNCTION ====================
+        function changeFontFamily(fontFamily) {
+            const target = getEditTarget();
+            const format = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+
+            // Apply to text elements in selected poster only
+            document.querySelector(`#poster${format} .poster-heading`).style.fontFamily = fontFamily;
+            document.querySelector(`#poster${format} .poster-subheading`).style.fontFamily = fontFamily;
+            document.querySelector(`#poster${format} .poster-description`).style.fontFamily = fontFamily;
+
+            showNotification(`✓ Font changed for ${currentEditMode} poster!`);
+        }
+
+        // ==================== EMOJI INSERT FUNCTION ====================
+        let lastFocusedInput = null;
+
+        // Track which input was last focused
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('heading').addEventListener('focus', function() {
+                lastFocusedInput = 'heading';
+            });
+            document.getElementById('subheading').addEventListener('focus', function() {
+                lastFocusedInput = 'subheading';
+            });
+            document.getElementById('description').addEventListener('focus', function() {
+                lastFocusedInput = 'description';
+            });
+        });
+
+        function insertEmoji(emoji) {
+            const targetInput = lastFocusedInput || 'heading';
+            const inputElement = document.getElementById(targetInput);
+
+            if (inputElement) {
+                const cursorPos = inputElement.selectionStart || inputElement.value.length;
+                const textBefore = inputElement.value.substring(0, cursorPos);
+                const textAfter = inputElement.value.substring(cursorPos);
+
+                inputElement.value = textBefore + emoji + textAfter;
+                updateContent();
+                inputElement.focus();
+                inputElement.setSelectionRange(cursorPos + emoji.length, cursorPos + emoji.length);
+
+                showNotification(`${emoji} inserted!`);
+            }
+        }
+
+        // ==================== PRODUCT SHOWCASE FUNCTIONS ====================
+        let currentProductElement = null;
+
+        function addProductElement(type) {
+            currentProductElement = type;
+            document.getElementById('productElementInputs').classList.remove('hidden');
+
+            if (type === 'price') {
+                showNotification('💡 Enter price and click Apply');
+            } else if (type === 'discount') {
+                showNotification('💡 Enter discount % and click Apply');
+            } else {
+                applyProductElement();
+            }
+        }
+
+        function applyProductElement() {
+            const type = currentProductElement;
+            let badgeHTML = '';
+
+            if (type === 'price') {
+                const price = document.getElementById('priceAmount').value || '₹299';
+                badgeHTML = `<div class="product-badge price-badge">${price}</div>`;
+            } else if (type === 'discount') {
+                const discount = document.getElementById('discountPercent').value || '50% OFF';
+                badgeHTML = `<div class="product-badge discount-badge">${discount}</div>`;
+            } else if (type === 'new') {
+                badgeHTML = `<div class="product-badge new-badge">NEW ✨</div>`;
+            } else if (type === 'sale') {
+                badgeHTML = `<div class="product-badge sale-badge">SALE 🔥</div>`;
+            }
+
+            const mobileContent = document.querySelector('#posterMobile .poster-content');
+            const desktopContent = document.querySelector('#posterDesktop .poster-content');
+
+            document.querySelectorAll('.product-badge').forEach(el => el.remove());
+
+            mobileContent.insertAdjacentHTML('beforeend', badgeHTML);
+            desktopContent.insertAdjacentHTML('beforeend', badgeHTML);
+
+            if (!document.getElementById('product-badge-styles')) {
+                const styleTag = document.createElement('style');
+                styleTag.id = 'product-badge-styles';
+                styleTag.textContent = `
+                    .product-badge {
+                        position: absolute;
+                        z-index: 10;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        font-weight: 700;
+                        font-size: 1.2rem;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                        animation: badgePop 0.3s ease-out;
+                    }
+
+                    .price-badge {
+                        top: 20px;
+                        right: 20px;
+                        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+                        color: white;
+                    }
+
+                    .discount-badge {
+                        top: 20px;
+                        left: 20px;
+                        background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+                        color: white;
+                    }
+
+                    .new-badge {
+                        top: 20px;
+                        right: 20px;
+                        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+                        color: #fff;
+                    }
+
+                    .sale-badge {
+                        top: 20px;
+                        left: 20px;
+                        background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);
+                        color: white;
+                        transform: rotate(-5deg);
+                    }
+
+                    @keyframes badgePop {
+                        0% { transform: scale(0) rotate(0deg); }
+                        50% { transform: scale(1.1) rotate(5deg); }
+                        100% { transform: scale(1) rotate(0deg); }
+                    }
+                `;
+                document.head.appendChild(styleTag);
+            }
+
+            showNotification('✓ Product element added!');
+        }
+
+        function removeProductElement() {
+            document.querySelectorAll('.product-badge').forEach(el => el.remove());
+            document.getElementById('productElementInputs').classList.add('hidden');
+            showNotification('✓ Product element removed!');
+        }
+
+        // ==================== DOWNLOAD FUNCTIONS ====================
+        async function downloadPoster(format) {
+            const posterId = format === 'mobile' ? 'posterMobile' : 'posterDesktop';
+            const poster = document.getElementById(posterId);
+
+            try {
+                const canvas = await html2canvas(poster, {
+                    scale: 3,
+                    backgroundColor: null,
+                    logging: false,
+                    width: poster.offsetWidth,
+                    height: poster.offsetHeight
+                });
+
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `poster-${format}-${Date.now()}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    showNotification(`✓ ${format} poster downloaded!`);
+                });
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Download feature requires html2canvas library.');
+            }
+        }
+
+        async function downloadBoth() {
+            await downloadPoster('mobile');
+            setTimeout(() => downloadPoster('desktop'), 1000);
+        }
+
+        // Notification system
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+                font-weight: 600;
+                font-size: 13px;
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    <!-- Load html2canvas for download functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
+</html>
