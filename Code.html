@@ -871,23 +871,97 @@
 
     <!-- ==================== CONTROL PANEL ==================== -->
     <div class="control-panel">
-        <h1>📱 Multi-Format Poster Generator</h1>
-        <p>Create professional posters for Mobile & Desktop with advanced features!</p>
+        <h1>🎨 Multi-Format Poster Generator</h1>
+        <p>Create professional posters in 4 formats: Mobile, Desktop, Carousel & Infographic!</p>
 
         <!-- FORMAT SELECTOR - NEW! -->
         <div class="control-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
             <h3 style="color: white; margin-bottom: 15px;">🎯 Select Format to Edit</h3>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <button id="editMobileBtn" onclick="switchEditMode('mobile')" style="flex: 1; min-width: 150px; background: white; color: #667eea; border: 3px solid white; font-size: 14px; padding: 15px;">
-                    📱 Edit Mobile Poster
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+                <button id="editMobileBtn" onclick="switchEditMode('mobile')" style="background: white; color: #667eea; border: 3px solid white; font-size: 13px; padding: 12px;">
+                    📱 Mobile
                 </button>
-                <button id="editDesktopBtn" onclick="switchEditMode('desktop')" style="flex: 1; min-width: 150px; background: transparent; color: white; border: 3px solid white; font-size: 14px; padding: 15px;">
-                    🖥️ Edit Desktop Poster
+                <button id="editDesktopBtn" onclick="switchEditMode('desktop')" style="background: transparent; color: white; border: 3px solid white; font-size: 13px; padding: 12px;">
+                    🖥️ Desktop
+                </button>
+                <button id="editCarouselBtn" onclick="switchEditMode('carousel')" style="background: transparent; color: white; border: 3px solid white; font-size: 13px; padding: 12px;">
+                    🎠 Carousel
+                </button>
+                <button id="editInfographicBtn" onclick="switchEditMode('infographic')" style="background: transparent; color: white; border: 3px solid white; font-size: 13px; padding: 12px;">
+                    📊 Infographic
                 </button>
             </div>
             <p style="color: white; margin-top: 10px; font-size: 12px; text-align: center;">
-                <span id="editModeIndicator">Currently editing: Mobile Poster</span>
+                <span id="editModeIndicator">Currently editing: Mobile Poster 📱</span>
             </p>
+        </div>
+
+        <!-- INDUSTRY SELECTOR - NEW! -->
+        <div class="control-section" style="background: #f8f9fa; border-left: 4px solid #e74c3c;">
+            <h3>🏭 Quick Industry Themes</h3>
+            <p style="color: #7f8c8d; margin-bottom: 15px; font-size: 12px;">Choose your industry for relevant theme suggestions</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button onclick="showIndustryThemes('education')" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 13px;">
+                    🎓 Education & Career
+                </button>
+                <button onclick="showIndustryThemes('ecommerce')" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 13px;">
+                    🛒 E-commerce & Products
+                </button>
+                <button onclick="showIndustryThemes('all')" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); font-size: 13px;">
+                    🎨 All Themes
+                </button>
+            </div>
+        </div>
+
+        <!-- QUICK COPY TOOL - NEW! -->
+        <div class="control-section" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+            <h3>🔄 Quick Copy Tool</h3>
+            <p style="color: #2e7d32; margin-bottom: 15px; font-size: 12px;">Copy all settings & content between Mobile and Desktop formats</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button onclick="copyFormat('mobile', 'desktop')" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%); font-size: 13px;">
+                    📱 → 🖥️ Copy Mobile to Desktop
+                </button>
+                <button onclick="copyFormat('desktop', 'mobile')" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #2196f3 0%, #03a9f4 100%); font-size: 13px;">
+                    🖥️ → 📱 Copy Desktop to Mobile
+                </button>
+            </div>
+            <p style="font-size: 11px; color: #666; margin-top: 10px; font-style: italic;">💡 Copies: text, colors, fonts, logo, branding, CTA, and all styles</p>
+        </div>
+
+        <!-- UNDO/REDO - NEW! -->
+        <div class="control-section" style="background: #fff3e0; border-left: 4px solid #ff9800;">
+            <h3>↩️ Undo / Redo</h3>
+            <p style="color: #e65100; margin-bottom: 15px; font-size: 12px;">Made a mistake? Go back to previous versions</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button onclick="undo()" style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #ff9800 0%, #ffa726 100%); font-size: 13px;">
+                    ↶ Undo
+                </button>
+                <button onclick="redo()" style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #ff9800 0%, #ffa726 100%); font-size: 13px;">
+                    ↷ Redo
+                </button>
+                <button onclick="clearHistory()" style="background: #e0e0e0; color: #333; font-size: 12px; padding: 10px 15px;">
+                    🗑️ Clear History
+                </button>
+            </div>
+            <p id="historyStatus" style="font-size: 11px; color: #666; margin-top: 10px;">History: 0 steps</p>
+        </div>
+
+        <!-- BATCH TEXT REPLACE - NEW! -->
+        <div class="control-section" style="background: #f3e5f5; border-left: 4px solid #9c27b0;">
+            <h3>🔄 Batch Text Replace</h3>
+            <p style="color: #6a1b9a; margin-bottom: 15px; font-size: 12px;">Replace text across all fields at once</p>
+
+            <label>Find Text:</label>
+            <input type="text" id="findText" placeholder="e.g., 2024, old brand name">
+
+            <label>Replace With:</label>
+            <input type="text" id="replaceText" placeholder="e.g., 2025, new brand name">
+
+            <button onclick="batchReplace()" style="width: 100%; background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);">
+                🔄 Replace All
+            </button>
+
+            <p style="font-size: 11px; color: #666; margin-top: 10px; font-style: italic;">💡 Searches in: heading, subheading, description, brand name, tagline, CTA text</p>
         </div>
 
         <!-- Content Editing Section -->
@@ -1008,6 +1082,237 @@
             <button onclick="removeLogo()" class="secondary">✗ Remove Logo</button>
         </div>
 
+        <!-- IMAGE UPLOAD - NEW! -->
+        <div class="control-section" style="border-left: 4px solid #00bcd4;">
+            <h3>🖼️ Upload Images/Photos</h3>
+            <p style="color: #7f8c8d; margin-bottom: 15px; font-size: 12px;">Add product photos, student pics, or any image to your poster</p>
+
+            <input type="file" id="imageUpload" accept="image/*" onchange="uploadImage(event)">
+
+            <div id="imageControls" class="hidden" style="margin-top: 15px;">
+                <label>Image Size:</label>
+                <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <button onclick="resizeImage('small')" style="font-size: 12px; padding: 8px 15px;">Small</button>
+                    <button onclick="resizeImage('medium')" style="font-size: 12px; padding: 8px 15px;">Medium</button>
+                    <button onclick="resizeImage('large')" style="font-size: 12px; padding: 8px 15px;">Large</button>
+                    <button onclick="resizeImage('full')" style="font-size: 12px; padding: 8px 15px;">Full Width</button>
+                </div>
+
+                <label>Image Position:</label>
+                <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <button onclick="moveImage('top')" style="font-size: 12px; padding: 8px 15px;">⬆️ Top</button>
+                    <button onclick="moveImage('center')" style="font-size: 12px; padding: 8px 15px;">↕️ Center</button>
+                    <button onclick="moveImage('bottom')" style="font-size: 12px; padding: 8px 15px;">⬇️ Bottom</button>
+                </div>
+
+                <label>Image Opacity:</label>
+                <input type="range" id="imageOpacity" min="0" max="100" value="100" oninput="updateImageOpacity(this.value)" style="width: 100%;">
+                <span id="imageOpacityValue">100%</span>
+
+                <button onclick="removeImage()" class="secondary" style="margin-top: 10px; width: 100%;">✗ Remove Image</button>
+            </div>
+        </div>
+
+        <!-- COUNTDOWN TIMER - NEW! -->
+        <div class="control-section" style="background: #ffe5e5; border-left: 4px solid #f44336;">
+            <h3>⏰ Countdown Timer</h3>
+            <p style="color: #c62828; margin-bottom: 15px; font-size: 12px;">Add urgency with countdown text (perfect for sales!)</p>
+
+            <label>
+                <input type="checkbox" id="countdownEnabled" onchange="toggleCountdown()"> Enable Countdown
+            </label>
+
+            <div id="countdownControls" class="hidden" style="margin-top: 15px;">
+                <label>Countdown Type:</label>
+                <select id="countdownType" onchange="updateCountdown()">
+                    <option value="hours">Hours Left</option>
+                    <option value="days">Days Left</option>
+                    <option value="ends">Ends Tonight</option>
+                    <option value="custom">Custom Text</option>
+                </select>
+
+                <div id="countdownCustom" class="hidden">
+                    <label>Custom Countdown Text:</label>
+                    <input type="text" id="countdownCustomText" placeholder="e.g., 2 HOURS LEFT" oninput="updateCountdown()">
+                </div>
+
+                <div id="countdownTimeInput" style="margin-top: 10px;">
+                    <label>Time Remaining:</label>
+                    <input type="number" id="countdownValue" value="24" min="1" max="999" placeholder="Enter number" oninput="updateCountdown()">
+                </div>
+
+                <label style="margin-top: 15px;">Countdown Position:</label>
+                <select id="countdownPosition" onchange="updateCountdown()">
+                    <option value="top-right" selected>Top Right</option>
+                    <option value="top-left">Top Left</option>
+                    <option value="top-center">Top Center</option>
+                    <option value="bottom-right">Bottom Right</option>
+                </select>
+
+                <label>Style:</label>
+                <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+                    <button onclick="applyCountdownStyle('badge')" style="font-size: 12px; padding: 8px;">Badge</button>
+                    <button onclick="applyCountdownStyle('banner')" style="font-size: 12px; padding: 8px;">Banner</button>
+                    <button onclick="applyCountdownStyle('minimal')" style="font-size: 12px; padding: 8px;">Minimal</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STAR RATING - NEW! -->
+        <div class="control-section" style="background: #fff9e5; border-left: 4px solid #ffc107;">
+            <h3>⭐ Star Rating</h3>
+            <p style="color: #f57c00; margin-bottom: 15px; font-size: 12px;">Add trust with star ratings (great for products!)</p>
+
+            <label>
+                <input type="checkbox" id="ratingEnabled" onchange="toggleRating()"> Enable Star Rating
+            </label>
+
+            <div id="ratingControls" class="hidden" style="margin-top: 15px;">
+                <label>Rating Value:</label>
+                <input type="range" id="ratingValue" min="0" max="5" step="0.1" value="4.5" oninput="updateRating()" style="width: 100%;">
+                <span id="ratingValueDisplay" style="font-size: 18px; font-weight: bold; color: #ffc107;">4.5 ⭐</span>
+
+                <label style="margin-top: 15px;">Rating Position:</label>
+                <select id="ratingPosition" onchange="updateRating()">
+                    <option value="top-right" selected>Top Right</option>
+                    <option value="top-left">Top Left</option>
+                    <option value="below-heading">Below Heading</option>
+                    <option value="below-description">Below Description</option>
+                </select>
+
+                <label>Style:</label>
+                <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+                    <button onclick="applyRatingStyle('stars')" style="font-size: 12px; padding: 8px;">⭐ Stars Only</button>
+                    <button onclick="applyRatingStyle('number')" style="font-size: 12px; padding: 8px;">4.5/5.0</button>
+                    <button onclick="applyRatingStyle('both')" style="font-size: 12px; padding: 8px;">Both</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT INFO - NEW! -->
+        <div class="control-section" style="background: #e3f2fd; border-left: 4px solid #2196f3;">
+            <h3>📞 Contact Information</h3>
+            <p style="color: #1565c0; margin-bottom: 15px; font-size: 12px;">Add your contact details so customers can reach you!</p>
+
+            <label>
+                <input type="checkbox" id="contactEnabled" onchange="toggleContact()"> Enable Contact Info
+            </label>
+
+            <div id="contactControls" class="hidden" style="margin-top: 15px;">
+                <label>Phone Number:</label>
+                <input type="text" id="contactPhone" placeholder="e.g., +91 98765 43210" oninput="updateContact()">
+
+                <label>WhatsApp Number:</label>
+                <input type="text" id="contactWhatsApp" placeholder="e.g., +91 98765 43210" oninput="updateContact()">
+
+                <label>Email:</label>
+                <input type="text" id="contactEmail" placeholder="e.g., info@yourbusiness.com" oninput="updateContact()">
+
+                <label>Website:</label>
+                <input type="text" id="contactWebsite" placeholder="e.g., www.yourbusiness.com" oninput="updateContact()">
+
+                <label>Instagram Handle:</label>
+                <input type="text" id="contactInstagram" placeholder="e.g., @yourbusiness" oninput="updateContact()">
+
+                <label style="margin-top: 15px;">Contact Position:</label>
+                <select id="contactPosition" onchange="updateContact()">
+                    <option value="bottom" selected>Bottom of Poster</option>
+                    <option value="top">Top of Poster</option>
+                    <option value="below-cta">Below CTA Button</option>
+                </select>
+
+                <label>Display Style:</label>
+                <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+                    <button onclick="applyContactStyle('icons')" style="font-size: 12px; padding: 8px;">📱 With Icons</button>
+                    <button onclick="applyContactStyle('text')" style="font-size: 12px; padding: 8px;">📝 Text Only</button>
+                    <button onclick="applyContactStyle('compact')" style="font-size: 12px; padding: 8px;">⚡ Compact</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFOGRAPHIC CUSTOMIZER - NEW! -->
+        <div class="control-section" id="infographicCustomizer" style="background: #e8eaf6; border-left: 4px solid #673ab7; display: none;">
+            <h3>📊 Customize Infographic Data</h3>
+            <p style="color: #5e35b1; margin-bottom: 15px; font-size: 12px;">Edit the statistics and information in your infographic</p>
+
+            <div id="infographicDataEditor">
+                <!-- Stats Editor -->
+                <div id="statsEditor" style="display: none;">
+                    <h4 style="font-size: 14px; margin-bottom: 10px;">Edit Statistics:</h4>
+
+                    <label>Stat 1 - Number:</label>
+                    <input type="text" id="stat1Num" value="85%" placeholder="e.g., 85%, 2.5x, 1000+" oninput="updateInfographicStats()">
+                    <label>Stat 1 - Label:</label>
+                    <input type="text" id="stat1Label" value="Students find success" oninput="updateInfographicStats()">
+
+                    <label>Stat 2 - Number:</label>
+                    <input type="text" id="stat2Num" value="2.5x" placeholder="e.g., 85%, 2.5x, 1000+" oninput="updateInfographicStats()">
+                    <label>Stat 2 - Label:</label>
+                    <input type="text" id="stat2Label" value="Faster career growth" oninput="updateInfographicStats()">
+
+                    <label>Stat 3 - Number:</label>
+                    <input type="text" id="stat3Num" value="10+" placeholder="e.g., 85%, 2.5x, 1000+" oninput="updateInfographicStats()">
+                    <label>Stat 3 - Label:</label>
+                    <input type="text" id="stat3Label" value="Top career options" oninput="updateInfographicStats()">
+                </div>
+
+                <!-- Timeline Editor -->
+                <div id="timelineEditor" style="display: none;">
+                    <h4 style="font-size: 14px; margin-bottom: 10px;">Edit Timeline Steps:</h4>
+
+                    <label>Step 1 - Title:</label>
+                    <input type="text" id="timeline1Title" value="Choose Your Stream" oninput="updateInfographicTimeline()">
+                    <label>Step 1 - Description:</label>
+                    <input type="text" id="timeline1Desc" value="Select the right path after 10th/12th" oninput="updateInfographicTimeline()">
+
+                    <label>Step 2 - Title:</label>
+                    <input type="text" id="timeline2Title" value="Prepare & Study" oninput="updateInfographicTimeline()">
+                    <label>Step 2 - Description:</label>
+                    <input type="text" id="timeline2Desc" value="Focus on your goals and work hard" oninput="updateInfographicTimeline()">
+
+                    <label>Step 3 - Title:</label>
+                    <input type="text" id="timeline3Title" value="Achieve Success" oninput="updateInfographicTimeline()">
+                    <label>Step 3 - Description:</label>
+                    <input type="text" id="timeline3Desc" value="Reach your dream career destination" oninput="updateInfographicTimeline()">
+                </div>
+            </div>
+        </div>
+
+        <!-- SHAPES & BORDERS - NEW! -->
+        <div class="control-section" style="background: #fce4ec; border-left: 4px solid #e91e63;">
+            <h3>🎨 Shapes & Borders</h3>
+            <p style="color: #c2185b; margin-bottom: 15px; font-size: 12px;">Add decorative elements to make your poster pop!</p>
+
+            <label>Add Shape/Border:</label>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px;">
+                <button onclick="addShape('circle')" style="font-size: 12px; padding: 10px;">⭕ Circle</button>
+                <button onclick="addShape('square')" style="font-size: 12px; padding: 10px;">◻️ Square</button>
+                <button onclick="addShape('border')" style="font-size: 12px; padding: 10px;">🖼️ Border</button>
+                <button onclick="addShape('badge')" style="font-size: 12px; padding: 10px;">🏷️ Badge</button>
+                <button onclick="addShape('ribbon')" style="font-size: 12px; padding: 10px;">🎀 Ribbon</button>
+                <button onclick="addShape('line')" style="font-size: 12px; padding: 10px;">➖ Line</button>
+            </div>
+
+            <div id="shapeControls" class="hidden" style="margin-top: 15px;">
+                <label>Shape Color:</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="shapeColor" value="#ffffff" oninput="updateShape()">
+                    <input type="text" id="shapeColorHex" value="#ffffff" readonly>
+                </div>
+
+                <label>Shape Position:</label>
+                <select id="shapePosition" onchange="updateShape()">
+                    <option value="top-left">Top Left</option>
+                    <option value="top-right">Top Right</option>
+                    <option value="bottom-left">Bottom Left</option>
+                    <option value="bottom-right">Bottom Right</option>
+                    <option value="center">Center</option>
+                </select>
+
+                <button onclick="removeShape()" class="secondary" style="margin-top: 10px; width: 100%;">✗ Remove Shape</button>
+            </div>
+        </div>
+
         <!-- Sample Themes Section -->
         <div class="control-section">
             <h3>🎨 Quick Themes (Click to Apply)</h3>
@@ -1085,6 +1390,66 @@
                     </div>
                     <h3 style="font-size: 16px; margin-bottom: 5px;">Bold & Punchy</h3>
                     <p style="font-size: 12px; color: #7f8c8d;">Fast learning hacks</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 7 - EDUCATION -->
+                <div class="carousel-item" onclick="applyEducationTheme('stream12th')">
+                    <div style="background: linear-gradient(135deg, #ff6348 0%, #ffb142 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        🎯 Stream Selection
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">After 10th/12th</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Science, Commerce, Arts guidance</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 8 - EDUCATION -->
+                <div class="carousel-item" onclick="applyEducationTheme('collegeAdmission')">
+                    <div style="background: linear-gradient(135deg, #5f27cd 0%, #341f97 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        🏛️ College Admission
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">University Guide</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Top colleges & entrance exams</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 9 - EDUCATION -->
+                <div class="carousel-item" onclick="applyEducationTheme('scholarshipAlert')">
+                    <div style="background: linear-gradient(135deg, #ffd32a 0%, #ff9a00 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        💰 Scholarship Alert
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Financial Aid</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Free education opportunities</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 10 - E-COMMERCE -->
+                <div class="carousel-item" onclick="applyEducationTheme('flashSale')">
+                    <div style="background: linear-gradient(135deg, #eb3b5a 0%, #fc5c65 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        ⚡ Flash Sale
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Urgent Offers</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Limited time deals</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 11 - E-COMMERCE -->
+                <div class="carousel-item" onclick="applyEducationTheme('newArrival')">
+                    <div style="background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                        ✨ New Arrival
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">Fresh Stock</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Latest products showcase</p>
+                    <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
+                </div>
+
+                <!-- Carousel Item 12 - E-COMMERCE -->
+                <div class="carousel-item" onclick="applyEducationTheme('premiumProduct')">
+                    <div style="background: linear-gradient(135deg, #000000 0%, #434343 100%); height: 150px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #ffd700; font-size: 24px;">
+                        👑 Premium Luxury
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 5px;">High-End Products</h3>
+                    <p style="font-size: 12px; color: #7f8c8d;">Exclusive & elegant</p>
                     <button style="margin-top: 10px; width: 100%;">Apply Theme</button>
                 </div>
             </div>
@@ -1175,10 +1540,73 @@
                     <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🧘 Mindfulness</p>
                     <p style="font-size: 9px; color: #7f8c8d;">Calm Focus</p>
                 </div>
+
+                <!-- Stream Selection 10th/12th -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('stream12th')" data-industry="education">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #ff6348 0%, #ffb142 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🎯 Stream Guide</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">After 10th/12th</p>
+                </div>
+
+                <!-- College Admission -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('collegeAdmission')" data-industry="education">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #5f27cd 0%, #341f97 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🏛️ College Admission</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">University Guide</p>
+                </div>
+
+                <!-- Scholarship Alert -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('scholarshipAlert')" data-industry="education">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #ffd32a 0%, #ff9a00 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">💰 Scholarship</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Financial Aid</p>
+                </div>
+
+                <!-- Flash Sale -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('flashSale')" data-industry="ecommerce">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #eb3b5a 0%, #fc5c65 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">⚡ Flash Sale</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Limited Time</p>
+                </div>
+
+                <!-- New Arrival -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('newArrival')" data-industry="ecommerce">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">✨ New Arrival</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Fresh Stock</p>
+                </div>
+
+                <!-- Premium Product -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('premiumProduct')" data-industry="ecommerce">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #000000 0%, #434343 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">👑 Premium</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Luxury Products</p>
+                </div>
+
+                <!-- Clearance Sale -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('clearanceSale')" data-industry="ecommerce">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🔥 Clearance</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Up to 70% OFF</p>
+                </div>
+
+                <!-- Eco Friendly -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('ecoFriendly')" data-industry="ecommerce">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🌿 Eco-Friendly</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Sustainable</p>
+                </div>
+
+                <!-- Festive Sale -->
+                <div class="edu-theme-card" onclick="applyEducationTheme('festiveSale')" data-industry="ecommerce">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);"></div>
+                    <p style="font-size: 11px; margin-top: 5px; font-weight: 600;">🎊 Festive Sale</p>
+                    <p style="font-size: 9px; color: #7f8c8d;">Celebrate & Save</p>
+                </div>
             </div>
 
             <p style="font-size: 10px; color: #7f8c8d; margin-top: 15px; font-style: italic;">
-                💡 Each theme includes: matching colors, fonts, and background patterns optimized for student content!
+                💡 Each theme includes: matching colors, fonts, and background patterns optimized for your industry!
             </p>
         </div>
 
@@ -1397,7 +1825,10 @@
             <div class="button-group">
                 <button onclick="downloadPoster('mobile')" class="download">📱 Download Mobile (1080x1920)</button>
                 <button onclick="downloadPoster('desktop')" class="download">🖥️ Download Desktop (1920x1080)</button>
-                <button onclick="downloadBoth()" class="download">📦 Download Both</button>
+                <button onclick="downloadPoster('carousel')" class="download">🎠 Download Carousel Slide</button>
+                <button onclick="downloadPoster('infographic')" class="download">📊 Download Infographic</button>
+                <button onclick="downloadAllCarousel()" class="download">📦 Download All Carousel Slides</button>
+                <button onclick="downloadBoth()" class="download">📦 Download All Formats</button>
             </div>
         </div>
     </div>
@@ -1446,38 +1877,172 @@
                 </div>
             </div>
         </div>
+
+        <!-- Carousel Format - NEW! -->
+        <div class="format-section" id="carouselSection" style="display: none;">
+            <h2>🎠 Carousel Format (Multi-Slide Posts)</h2>
+            <p style="text-align: center; color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Perfect for Instagram/LinkedIn carousels - swipe through multiple slides</p>
+
+            <div id="carouselSlideManager" style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px;">📑 Manage Slides</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;" id="slideButtons"></div>
+                <button onclick="addCarouselSlide()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px 20px; border-radius: 10px; color: white; font-size: 14px; cursor: pointer;">
+                    ➕ Add New Slide
+                </button>
+                <p style="font-size: 11px; color: #666; margin-top: 10px;">💡 Create 2-10 slides. Each slide can have different content and design.</p>
+            </div>
+
+            <div class="poster-wrapper">
+                <div class="poster poster-mobile" id="posterCarousel">
+                    <div class="poster-content">
+                        <img class="poster-logo hidden" id="logoCarousel" src="" alt="Logo">
+                        <div class="poster-text">
+                            <div id="brandingTopCarousel" class="poster-branding hidden"></div>
+                            <h1 class="poster-heading" id="headingCarousel">Slide 1: Top 10 Careers</h1>
+                            <h2 class="poster-subheading" id="subheadingCarousel">Start Your Journey</h2>
+                            <p class="poster-description" id="descriptionCarousel">This is the first slide of your carousel. Add more slides below!</p>
+                            <div id="brandingBelowDescCarousel" class="poster-branding hidden"></div>
+                            <button class="cta-button hidden" id="ctaCarousel">Swipe →</button>
+                            <div id="brandingBelowCTACarousel" class="poster-branding hidden"></div>
+                        </div>
+                        <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px;">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: white;"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Infographic Format - NEW! -->
+        <div class="format-section" id="infographicSection" style="display: none;">
+            <h2>📊 Infographic Format (Data Visualization)</h2>
+            <p style="text-align: center; color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Perfect for statistics, comparisons, and step-by-step guides</p>
+
+            <div id="infographicStyleSelector" style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px;">🎨 Choose Infographic Layout</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                    <button onclick="setInfographicLayout('stats')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 15px; border-radius: 10px; color: white; font-size: 13px; cursor: pointer;">
+                        📈 Statistics
+                    </button>
+                    <button onclick="setInfographicLayout('timeline')" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border: none; padding: 15px; border-radius: 10px; color: white; font-size: 13px; cursor: pointer;">
+                        📅 Timeline
+                    </button>
+                    <button onclick="setInfographicLayout('comparison')" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border: none; padding: 15px; border-radius: 10px; color: white; font-size: 13px; cursor: pointer;">
+                        ⚖️ Comparison
+                    </button>
+                    <button onclick="setInfographicLayout('steps')" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border: none; padding: 15px; border-radius: 10px; color: white; font-size: 13px; cursor: pointer;">
+                        🔢 Steps
+                    </button>
+                </div>
+            </div>
+
+            <div class="poster-wrapper">
+                <div class="poster poster-mobile" id="posterInfographic" style="padding: 40px 30px;">
+                    <div class="poster-content">
+                        <img class="poster-logo hidden" id="logoInfographic" src="" alt="Logo">
+                        <div class="poster-text">
+                            <div id="brandingTopInfographic" class="poster-branding hidden"></div>
+                            <h1 class="poster-heading" id="headingInfographic" style="font-size: 32px;">Career Planning Stats</h1>
+                            <h2 class="poster-subheading" id="subheadingInfographic" style="font-size: 18px;">Key Numbers You Need to Know</h2>
+
+                            <!-- Infographic Content Area -->
+                            <div id="infographicContent" style="margin: 30px 0;">
+                                <!-- Stats Layout (Default) -->
+                                <div class="infographic-stats" id="statsLayout">
+                                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center;">
+                                        <div style="font-size: 48px; font-weight: bold; color: #fff;">85%</div>
+                                        <div style="font-size: 16px; margin-top: 10px;">Students find success</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center;">
+                                        <div style="font-size: 48px; font-weight: bold; color: #fff;">2.5x</div>
+                                        <div style="font-size: 16px; margin-top: 10px;">Faster career growth</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; text-align: center;">
+                                        <div style="font-size: 48px; font-weight: bold; color: #fff;">10+</div>
+                                        <div style="font-size: 16px; margin-top: 10px;">Top career options</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="poster-description" id="descriptionInfographic">Expert guidance for your future</p>
+                            <div id="brandingBelowDescInfographic" class="poster-branding hidden"></div>
+                            <button class="cta-button hidden" id="ctaInfographic">Learn More</button>
+                            <div id="brandingBelowCTAInfographic" class="poster-branding hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ==================== INSTRUCTIONS ==================== -->
     <div class="instructions">
         <h2>📖 How to Use This Tool</h2>
         <ol>
-            <li><strong>Edit Content:</strong> Change heading, subheading, and description</li>
-            <li><strong>Add Branding:</strong> Enable and add your brand name and tagline</li>
-            <li><strong>Add CTA Button:</strong> Enable and customize your call-to-action button (appears below description)</li>
-            <li><strong>Add Logo:</strong> Upload your logo (optional)</li>
-            <li><strong>Choose Theme:</strong> Browse carousel or click themes to apply instantly</li>
-            <li><strong>Customize Background:</strong> Upload images, use patterns, or add custom CSS</li>
-            <li><strong>Format Text:</strong> Change colors, size, alignment, and effects</li>
-            <li><strong>Download:</strong> Save as high-quality images (1080x1920 for mobile, 1920x1080 for desktop)</li>
+            <li><strong>Select Format:</strong> Choose Mobile, Desktop, Carousel, or Infographic format to edit</li>
+            <li><strong>Edit Content:</strong> Change heading, subheading, and description for your selected format</li>
+            <li><strong>Carousel Mode:</strong> Create 2-10 slide carousels for Instagram/LinkedIn with slide management</li>
+            <li><strong>Infographic Mode:</strong> Choose from 4 layouts (Stats, Timeline, Comparison, Steps) and customize data</li>
+            <li><strong>Add Branding:</strong> Enable and add your brand name and tagline with flexible positioning</li>
+            <li><strong>Add CTA Button:</strong> Enable and customize your call-to-action button</li>
+            <li><strong>Add Logo:</strong> Upload your logo and position it anywhere on the poster</li>
+            <li><strong>Choose Theme:</strong> Browse themes or click to apply instantly - education & e-commerce themes</li>
+            <li><strong>Advanced Features:</strong> Image upload, countdown timer, star ratings, contact info, shapes & borders</li>
+            <li><strong>Download:</strong> Save individual formats or download all carousel slides at once</li>
         </ol>
 
-        <h2 style="margin-top: 30px;">✅ New Features Added</h2>
+        <h2 style="margin-top: 30px;">✅ Complete Feature List (32 Total Features)</h2>
         <ul style="list-style: none; margin-left: 0;">
-            <li>✓ Fully responsive design - works perfectly on mobile and desktop</li>
-            <li>✓ Carousel feature for browsing education templates</li>
-            <li>✓ Enhanced education-based poster themes</li>
-            <li>✓ CTA button designer - button appears below description for better visibility</li>
-            <li>✓ Branding section - add brand name and tagline with flexible positioning</li>
-            <li>✓ Mobile-optimized controls and settings</li>
-            <li>✓ Touch-friendly interface for all devices</li>
+            <li>✓ <strong>4 Poster Formats:</strong> Mobile, Desktop, Carousel (multi-slide), Infographic</li>
+            <li>✓ <strong>Carousel Creator:</strong> Create 2-10 slides with individual customization</li>
+            <li>✓ <strong>4 Infographic Layouts:</strong> Statistics, Timeline, Comparison, Steps</li>
+            <li>✓ <strong>Independent Editing:</strong> Edit each format separately without affecting others</li>
+            <li>✓ <strong>Quick Copy Tool:</strong> Copy all settings between formats instantly</li>
+            <li>✓ <strong>19+ Themes:</strong> Education & e-commerce specific themes with industry filter</li>
+            <li>✓ <strong>Theme Carousel:</strong> Browse themes with auto-play carousel</li>
+            <li>✓ <strong>Branding Section:</strong> Brand name + tagline with 3 position options</li>
+            <li>✓ <strong>CTA Button Designer:</strong> Full customization with 3 styles and 3 positions</li>
+            <li>✓ <strong>Logo Upload:</strong> Add logo with positioning and transparency</li>
+            <li>✓ <strong>Background Options:</strong> Colors, gradients, patterns, images, or custom CSS</li>
+            <li>✓ <strong>Image Upload:</strong> Add images with 4 size options and 3 positions</li>
+            <li>✓ <strong>Countdown Timer:</strong> 4 types (days, hours, event, sale) with 3 styles</li>
+            <li>✓ <strong>Star Rating:</strong> 0-5 stars with 3 display styles and 4 positions</li>
+            <li>✓ <strong>Contact Information:</strong> Phone, WhatsApp, email, website, Instagram</li>
+            <li>✓ <strong>Shapes & Borders:</strong> 6 decorative elements with color picker</li>
+            <li>✓ <strong>Undo/Redo:</strong> 20-step history with auto-save</li>
+            <li>✓ <strong>Batch Text Replace:</strong> Replace text across all fields at once</li>
+            <li>✓ <strong>Text Formatting:</strong> Colors, sizes, alignment, fonts, effects</li>
+            <li>✓ <strong>Fully Responsive:</strong> Works perfectly on mobile and desktop devices</li>
+            <li>✓ <strong>Download Options:</strong> Individual formats or bulk download all carousel slides</li>
         </ul>
     </div>
 
     <!-- ==================== JAVASCRIPT ==================== -->
     <script>
+        // ==================== INDUSTRY FILTER ====================
+        function showIndustryThemes(industry) {
+            const allCards = document.querySelectorAll('.edu-theme-card');
+
+            allCards.forEach(card => {
+                const cardIndustry = card.getAttribute('data-industry');
+
+                if (industry === 'all') {
+                    card.style.display = '';
+                } else if (industry === 'education') {
+                    card.style.display = cardIndustry === 'education' || !cardIndustry ? '' : 'none';
+                } else if (industry === 'ecommerce') {
+                    card.style.display = cardIndustry === 'ecommerce' ? '' : 'none';
+                }
+            });
+
+            const industryName = industry === 'education' ? 'Education & Career' : industry === 'ecommerce' ? 'E-commerce' : 'All';
+            showNotification(`✓ Showing ${industryName} themes`);
+        }
+
         // ==================== EDIT MODE MANAGEMENT ====================
-        let currentEditMode = 'mobile'; // 'mobile' or 'desktop'
+        let currentEditMode = 'mobile'; // 'mobile', 'desktop', 'carousel', or 'infographic'
 
         function switchEditMode(mode) {
             currentEditMode = mode;
@@ -1485,31 +2050,60 @@
             // Update button styles
             const mobileBtn = document.getElementById('editMobileBtn');
             const desktopBtn = document.getElementById('editDesktopBtn');
+            const carouselBtn = document.getElementById('editCarouselBtn');
+            const infographicBtn = document.getElementById('editInfographicBtn');
             const indicator = document.getElementById('editModeIndicator');
 
+            // Reset all buttons
+            [mobileBtn, desktopBtn, carouselBtn, infographicBtn].forEach(btn => {
+                btn.style.background = 'transparent';
+                btn.style.color = 'white';
+            });
+
+            // Show/hide format sections
+            document.querySelectorAll('.format-section').forEach(section => {
+                section.style.display = '';
+            });
+            document.getElementById('carouselSection').style.display = 'none';
+            document.getElementById('infographicSection').style.display = 'none';
+            document.getElementById('infographicCustomizer').style.display = 'none';
+
+            // Highlight selected button and show section
             if (mode === 'mobile') {
                 mobileBtn.style.background = 'white';
                 mobileBtn.style.color = '#667eea';
-                desktopBtn.style.background = 'transparent';
-                desktopBtn.style.color = 'white';
                 indicator.textContent = 'Currently editing: Mobile Poster 📱';
-            } else {
+            } else if (mode === 'desktop') {
                 desktopBtn.style.background = 'white';
                 desktopBtn.style.color = '#667eea';
-                mobileBtn.style.background = 'transparent';
-                mobileBtn.style.color = 'white';
                 indicator.textContent = 'Currently editing: Desktop Poster 🖥️';
+            } else if (mode === 'carousel') {
+                carouselBtn.style.background = 'white';
+                carouselBtn.style.color = '#667eea';
+                indicator.textContent = 'Currently editing: Carousel Slides 🎠';
+                document.getElementById('carouselSection').style.display = '';
+                initializeCarouselSlides();
+            } else if (mode === 'infographic') {
+                infographicBtn.style.background = 'white';
+                infographicBtn.style.color = '#667eea';
+                indicator.textContent = 'Currently editing: Infographic 📊';
+                document.getElementById('infographicSection').style.display = '';
             }
 
             // Load content from the selected format
             loadContentFromPoster(mode);
 
-            showNotification(`✓ Switched to ${mode === 'mobile' ? 'Mobile' : 'Desktop'} editing mode`);
+            const modeName = mode === 'mobile' ? 'Mobile' : mode === 'desktop' ? 'Desktop' : mode === 'carousel' ? 'Carousel' : 'Infographic';
+            showNotification(`✓ Switched to ${modeName} editing mode`);
         }
 
         function loadContentFromPoster(mode) {
             // Load content from the poster being edited
-            const suffix = mode === 'mobile' ? 'Mobile' : 'Desktop';
+            let suffix;
+            if (mode === 'mobile') suffix = 'Mobile';
+            else if (mode === 'desktop') suffix = 'Desktop';
+            else if (mode === 'carousel') suffix = 'Carousel';
+            else if (mode === 'infographic') suffix = 'Infographic';
 
             const heading = document.getElementById('heading' + suffix).textContent;
             const subheading = document.getElementById('subheading' + suffix).textContent;
@@ -1521,13 +2115,17 @@
         }
 
         function getEditTarget() {
-            // Returns 'Mobile' or 'Desktop' based on current edit mode
-            return currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            // Returns 'Mobile', 'Desktop', 'Carousel', or 'Infographic' based on current edit mode
+            if (currentEditMode === 'mobile') return 'Mobile';
+            if (currentEditMode === 'desktop') return 'Desktop';
+            if (currentEditMode === 'carousel') return 'Carousel';
+            if (currentEditMode === 'infographic') return 'Infographic';
+            return 'Mobile';
         }
 
         // ==================== CAROUSEL FUNCTIONALITY ====================
         let currentSlide = 0;
-        const totalSlides = 6;
+        const totalSlides = 12; // Increased for more themes
 
         function initializeCarousel() {
             const dotsContainer = document.getElementById('carouselDots');
@@ -1732,6 +2330,13 @@
             document.getElementById('heading' + target).textContent = heading;
             document.getElementById('subheading' + target).textContent = subheading;
             document.getElementById('description' + target).textContent = description;
+
+            // If in carousel mode, also update the current slide data
+            if (currentEditMode === 'carousel' && carouselSlides.length > 0) {
+                carouselSlides[currentCarouselSlide].heading = heading;
+                carouselSlides[currentCarouselSlide].subheading = subheading;
+                carouselSlides[currentCarouselSlide].description = description;
+            }
         }
 
         // Logo upload function - applies to selected format only
@@ -1950,6 +2555,152 @@
                             heading: 'Study Mindfully 🧘✨',
                             subheading: 'Reduce Stress, Boost Focus',
                             description: 'Balance your mental health while achieving academic success'
+                        }
+                    };
+                    break;
+
+                // NEW EDUCATION THEMES FOR CAREER PLANNING
+                case 'stream12th':
+                    themeConfig = {
+                        primary: '#ff6348',
+                        secondary: '#ffb142',
+                        text: '#ffffff',
+                        font: "'Poppins', sans-serif",
+                        pattern: 'modern',
+                        emoji: '🎯',
+                        sample: {
+                            heading: 'Choose Your Stream Wisely 🎯',
+                            subheading: 'Science | Commerce | Arts',
+                            description: 'Make the right choice for your future after 10th/12th'
+                        }
+                    };
+                    break;
+
+                case 'collegeAdmission':
+                    themeConfig = {
+                        primary: '#5f27cd',
+                        secondary: '#341f97',
+                        text: '#ffffff',
+                        font: "'Montserrat', sans-serif",
+                        pattern: 'grid',
+                        emoji: '🏛️',
+                        sample: {
+                            heading: 'Top Colleges 2025 🏛️',
+                            subheading: 'Admission Guide & Deadlines',
+                            description: 'Your complete guide to getting into your dream university'
+                        }
+                    };
+                    break;
+
+                case 'scholarshipAlert':
+                    themeConfig = {
+                        primary: '#ffd32a',
+                        secondary: '#ff9a00',
+                        text: '#2c3e50',
+                        font: "'Roboto', sans-serif",
+                        pattern: 'sparkle',
+                        emoji: '💰',
+                        sample: {
+                            heading: 'Scholarship Alert! 💰✨',
+                            subheading: '100% Tuition Fee Waiver',
+                            description: 'Apply now for free education opportunities - Limited seats!'
+                        }
+                    };
+                    break;
+
+                // E-COMMERCE THEMES
+                case 'flashSale':
+                    themeConfig = {
+                        primary: '#eb3b5a',
+                        secondary: '#fc5c65',
+                        text: '#ffffff',
+                        font: "'Anton', sans-serif",
+                        pattern: 'stripes',
+                        emoji: '⚡',
+                        sample: {
+                            heading: 'FLASH SALE! ⚡',
+                            subheading: 'Only 2 Hours Left',
+                            description: 'Up to 80% OFF - Hurry before stock runs out!'
+                        }
+                    };
+                    break;
+
+                case 'newArrival':
+                    themeConfig = {
+                        primary: '#fd79a8',
+                        secondary: '#fdcb6e',
+                        text: '#ffffff',
+                        font: "'Poppins', sans-serif",
+                        pattern: 'bokeh',
+                        emoji: '✨',
+                        sample: {
+                            heading: 'New Arrivals ✨',
+                            subheading: 'Fresh Collection 2025',
+                            description: 'Be the first to shop our latest trending products'
+                        }
+                    };
+                    break;
+
+                case 'premiumProduct':
+                    themeConfig = {
+                        primary: '#000000',
+                        secondary: '#434343',
+                        text: '#ffd700',
+                        font: "'Playfair Display', serif",
+                        pattern: 'organic',
+                        emoji: '👑',
+                        sample: {
+                            heading: 'Premium Luxury 👑',
+                            subheading: 'Exclusive Collection',
+                            description: 'Experience elegance and sophistication'
+                        }
+                    };
+                    break;
+
+                case 'clearanceSale':
+                    themeConfig = {
+                        primary: '#fc4a1a',
+                        secondary: '#f7b733',
+                        text: '#ffffff',
+                        font: "'Bebas Neue', sans-serif",
+                        pattern: 'zigzag',
+                        emoji: '🔥',
+                        sample: {
+                            heading: 'CLEARANCE SALE 🔥',
+                            subheading: 'Up to 70% OFF',
+                            description: 'Massive discounts on all items - Final stock clearance!'
+                        }
+                    };
+                    break;
+
+                case 'ecoFriendly':
+                    themeConfig = {
+                        primary: '#56ab2f',
+                        secondary: '#a8e063',
+                        text: '#ffffff',
+                        font: "'Open Sans', sans-serif",
+                        pattern: 'organic',
+                        emoji: '🌿',
+                        sample: {
+                            heading: 'Eco-Friendly Products 🌿',
+                            subheading: 'Sustainable & Natural',
+                            description: 'Shop guilt-free - Good for you, great for the planet'
+                        }
+                    };
+                    break;
+
+                case 'festiveSale':
+                    themeConfig = {
+                        primary: '#ff0844',
+                        secondary: '#ffb199',
+                        text: '#ffffff',
+                        font: "'Poppins', sans-serif",
+                        pattern: 'sparkle',
+                        emoji: '🎊',
+                        sample: {
+                            heading: 'Festive Mega Sale 🎊',
+                            subheading: 'Celebrate with Huge Discounts',
+                            description: 'Special festive offers on your favorite products!'
                         }
                     };
                     break;
@@ -2554,9 +3305,985 @@
             showNotification('✓ Product element removed!');
         }
 
+        // ==================== QUICK COPY TOOL ====================
+        function copyFormat(from, to) {
+            const fromSuffix = from === 'mobile' ? 'Mobile' : 'Desktop';
+            const toSuffix = to === 'mobile' ? 'Mobile' : 'Desktop';
+
+            // Copy text content
+            const heading = document.getElementById('heading' + fromSuffix).textContent;
+            const subheading = document.getElementById('subheading' + fromSuffix).textContent;
+            const description = document.getElementById('description' + fromSuffix).textContent;
+
+            document.getElementById('heading' + toSuffix).textContent = heading;
+            document.getElementById('subheading' + toSuffix).textContent = subheading;
+            document.getElementById('description' + toSuffix).textContent = description;
+
+            // Copy styles
+            const fromPoster = document.querySelector(`#poster${fromSuffix} .poster-content`);
+            const toPoster = document.querySelector(`#poster${toSuffix} .poster-content`);
+
+            // Copy computed background
+            toPoster.style.cssText = fromPoster.style.cssText;
+
+            // Copy text colors and fonts
+            ['heading', 'subheading', 'description'].forEach(element => {
+                const fromEl = document.getElementById(element + fromSuffix);
+                const toEl = document.getElementById(element + toSuffix);
+                toEl.style.color = fromEl.style.color;
+                toEl.style.fontSize = fromEl.style.fontSize;
+                toEl.style.fontFamily = fromEl.style.fontFamily;
+                toEl.style.fontWeight = fromEl.style.fontWeight;
+                toEl.style.fontStyle = fromEl.style.fontStyle;
+                toEl.style.textShadow = fromEl.style.textShadow;
+                toEl.style.textAlign = fromEl.style.textAlign;
+            });
+
+            // Copy logo
+            const fromLogo = document.getElementById('logo' + fromSuffix);
+            const toLogo = document.getElementById('logo' + toSuffix);
+            if (!fromLogo.classList.contains('hidden')) {
+                toLogo.src = fromLogo.src;
+                toLogo.classList.remove('hidden');
+            }
+
+            showNotification(`✓ Copied all content & styles from ${from} to ${to} poster!`);
+        }
+
+        // ==================== UNDO/REDO SYSTEM ====================
+        let history = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 20;
+
+        function saveState() {
+            const state = {
+                heading: document.getElementById('heading').value,
+                subheading: document.getElementById('subheading').value,
+                description: document.getElementById('description').value,
+                brandName: document.getElementById('brandName').value,
+                brandTagline: document.getElementById('brandTagline').value,
+                ctaText: document.getElementById('ctaText').value,
+                timestamp: Date.now()
+            };
+
+            // Remove any future states if we're not at the end
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+
+            history.push(state);
+            if (history.length > MAX_HISTORY) {
+                history.shift();
+            } else {
+                historyIndex++;
+            }
+
+            updateHistoryStatus();
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                restoreState(history[historyIndex]);
+                showNotification('↶ Undo successful');
+            } else {
+                showNotification('⚠️ Nothing to undo');
+            }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                restoreState(history[historyIndex]);
+                showNotification('↷ Redo successful');
+            } else {
+                showNotification('⚠️ Nothing to redo');
+            }
+        }
+
+        function restoreState(state) {
+            document.getElementById('heading').value = state.heading;
+            document.getElementById('subheading').value = state.subheading;
+            document.getElementById('description').value = state.description;
+            document.getElementById('brandName').value = state.brandName || '';
+            document.getElementById('brandTagline').value = state.brandTagline || '';
+            document.getElementById('ctaText').value = state.ctaText || '';
+
+            updateContent();
+            updateBranding();
+            updateCTA();
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all undo/redo history?')) {
+                history = [];
+                historyIndex = -1;
+                updateHistoryStatus();
+                showNotification('✓ History cleared');
+            }
+        }
+
+        function updateHistoryStatus() {
+            const status = document.getElementById('historyStatus');
+            status.textContent = `History: ${history.length} steps (${historyIndex + 1}/${history.length})`;
+        }
+
+        // Auto-save state on content change
+        let saveTimeout;
+        function autoSaveState() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                saveState();
+            }, 1000);
+        }
+
+        // ==================== BATCH TEXT REPLACE ====================
+        function batchReplace() {
+            const findText = document.getElementById('findText').value;
+            const replaceText = document.getElementById('replaceText').value;
+
+            if (!findText) {
+                alert('Please enter text to find');
+                return;
+            }
+
+            let replacements = 0;
+
+            // Replace in heading
+            const heading = document.getElementById('heading');
+            if (heading.value.includes(findText)) {
+                heading.value = heading.value.replaceAll(findText, replaceText);
+                replacements++;
+            }
+
+            // Replace in subheading
+            const subheading = document.getElementById('subheading');
+            if (subheading.value.includes(findText)) {
+                subheading.value = subheading.value.replaceAll(findText, replaceText);
+                replacements++;
+            }
+
+            // Replace in description
+            const description = document.getElementById('description');
+            if (description.value.includes(findText)) {
+                description.value = description.value.replaceAll(findText, replaceText);
+                replacements++;
+            }
+
+            // Replace in brand name
+            const brandName = document.getElementById('brandName');
+            if (brandName.value.includes(findText)) {
+                brandName.value = brandName.value.replaceAll(findText, replaceText);
+                replacements++;
+            }
+
+            // Replace in tagline
+            const brandTagline = document.getElementById('brandTagline');
+            if (brandTagline.value.includes(findText)) {
+                brandTagline.value = brandTagline.value.replaceAll(findText, replaceText);
+                replacements++;
+            }
+
+            // Replace in CTA
+            const ctaText = document.getElementById('ctaText');
+            if (ctaText.value.includes(findText)) {
+                ctaText.value = ctaText.value.replaceAll(findText, replaceText);
+                replacements++;
+            }
+
+            updateContent();
+            updateBranding();
+            updateCTA();
+
+            showNotification(`✓ Replaced "${findText}" with "${replaceText}" in ${replacements} places`);
+        }
+
+        // ==================== IMAGE UPLOAD ====================
+        let uploadedImage = null;
+
+        function uploadImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage = e.target.result;
+                    addImageToPoster();
+                    document.getElementById('imageControls').classList.remove('hidden');
+                    showNotification('✓ Image uploaded!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addImageToPoster() {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const poster = document.querySelector(`#poster${target} .poster-content`);
+
+            // Remove existing uploaded image
+            const existingImg = poster.querySelector('.uploaded-image');
+            if (existingImg) existingImg.remove();
+
+            // Add new image
+            const img = document.createElement('img');
+            img.src = uploadedImage;
+            img.className = 'uploaded-image';
+            img.style.cssText = `
+                position: absolute;
+                width: 50%;
+                z-index: 1;
+                border-radius: 10px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            `;
+            poster.appendChild(img);
+        }
+
+        function resizeImage(size) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const img = document.querySelector(`#poster${target} .uploaded-image`);
+            if (!img) return;
+
+            const sizes = { small: '30%', medium: '50%', large: '70%', full: '100%' };
+            img.style.width = sizes[size];
+            showNotification(`✓ Image resized to ${size}`);
+        }
+
+        function moveImage(position) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const img = document.querySelector(`#poster${target} .uploaded-image`);
+            if (!img) return;
+
+            if (position === 'top') {
+                img.style.top = '20%';
+                img.style.transform = 'translate(-50%, 0)';
+            } else if (position === 'center') {
+                img.style.top = '50%';
+                img.style.transform = 'translate(-50%, -50%)';
+            } else if (position === 'bottom') {
+                img.style.top = '80%';
+                img.style.transform = 'translate(-50%, -100%)';
+            }
+            showNotification(`✓ Image moved to ${position}`);
+        }
+
+        function updateImageOpacity(value) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const img = document.querySelector(`#poster${target} .uploaded-image`);
+            if (!img) return;
+
+            img.style.opacity = value / 100;
+            document.getElementById('imageOpacityValue').textContent = value + '%';
+        }
+
+        function removeImage() {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const img = document.querySelector(`#poster${target} .uploaded-image`);
+            if (img) img.remove();
+
+            document.getElementById('imageControls').classList.add('hidden');
+            document.getElementById('imageUpload').value = '';
+            uploadedImage = null;
+            showNotification('✓ Image removed');
+        }
+
+        // ==================== COUNTDOWN TIMER ====================
+        function toggleCountdown() {
+            const enabled = document.getElementById('countdownEnabled').checked;
+            const controls = document.getElementById('countdownControls');
+
+            if (enabled) {
+                controls.classList.remove('hidden');
+                updateCountdown();
+            } else {
+                controls.classList.add('hidden');
+                removeCountdown();
+            }
+        }
+
+        function updateCountdown() {
+            const type = document.getElementById('countdownType').value;
+            const customDiv = document.getElementById('countdownCustom');
+            const timeInput = document.getElementById('countdownTimeInput');
+
+            if (type === 'custom') {
+                customDiv.classList.remove('hidden');
+                timeInput.classList.add('hidden');
+            } else {
+                customDiv.classList.add('hidden');
+                timeInput.classList.remove('hidden');
+            }
+
+            let text = '';
+            if (type === 'hours') {
+                const value = document.getElementById('countdownValue').value;
+                text = `${value} HOURS LEFT ⏰`;
+            } else if (type === 'days') {
+                const value = document.getElementById('countdownValue').value;
+                text = `${value} DAYS LEFT 📅`;
+            } else if (type === 'ends') {
+                text = 'ENDS TONIGHT ⚡';
+            } else if (type === 'custom') {
+                text = document.getElementById('countdownCustomText').value || '2 HOURS LEFT';
+            }
+
+            addCountdownToPoster(text);
+        }
+
+        function addCountdownToPoster(text) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const poster = document.querySelector(`#poster${target} .poster-content`);
+
+            // Remove existing countdown
+            const existing = poster.querySelector('.countdown-badge');
+            if (existing) existing.remove();
+
+            // Add new countdown
+            const badge = document.createElement('div');
+            badge.className = 'countdown-badge';
+            badge.textContent = text;
+            badge.style.cssText = `
+                position: absolute;
+                z-index: 10;
+                background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+                color: white;
+                padding: 8px 15px;
+                border-radius: 20px;
+                font-weight: 700;
+                font-size: 0.85rem;
+                box-shadow: 0 4px 15px rgba(255, 106, 0, 0.5);
+                top: 20px;
+                right: 20px;
+            `;
+
+            const position = document.getElementById('countdownPosition').value;
+            if (position === 'top-left') {
+                badge.style.top = '20px';
+                badge.style.left = '20px';
+                badge.style.right = 'auto';
+            } else if (position === 'top-center') {
+                badge.style.top = '20px';
+                badge.style.left = '50%';
+                badge.style.transform = 'translateX(-50%)';
+                badge.style.right = 'auto';
+            } else if (position === 'bottom-right') {
+                badge.style.top = 'auto';
+                badge.style.bottom = '20px';
+                badge.style.right = '20px';
+            }
+
+            poster.appendChild(badge);
+        }
+
+        function applyCountdownStyle(style) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const badge = document.querySelector(`#poster${target} .countdown-badge`);
+            if (!badge) return;
+
+            if (style === 'badge') {
+                badge.style.borderRadius = '20px';
+                badge.style.padding = '8px 15px';
+            } else if (style === 'banner') {
+                badge.style.borderRadius = '0';
+                badge.style.padding = '10px 20px';
+                badge.style.width = '100%';
+                badge.style.left = '0';
+                badge.style.right = '0';
+                badge.style.transform = 'none';
+            } else if (style === 'minimal') {
+                badge.style.background = 'transparent';
+                badge.style.border = '2px solid white';
+                badge.style.boxShadow = 'none';
+            }
+            showNotification(`✓ ${style} style applied`);
+        }
+
+        function removeCountdown() {
+            ['Mobile', 'Desktop'].forEach(target => {
+                const badge = document.querySelector(`#poster${target} .countdown-badge`);
+                if (badge) badge.remove();
+            });
+        }
+
+        // ==================== STAR RATING ====================
+        function toggleRating() {
+            const enabled = document.getElementById('ratingEnabled').checked;
+            const controls = document.getElementById('ratingControls');
+
+            if (enabled) {
+                controls.classList.remove('hidden');
+                updateRating();
+            } else {
+                controls.classList.add('hidden');
+                removeRating();
+            }
+        }
+
+        function updateRating() {
+            const value = document.getElementById('ratingValue').value;
+            document.getElementById('ratingValueDisplay').textContent = `${value} ⭐`;
+
+            const stars = '⭐'.repeat(Math.round(value));
+            addRatingToPoster(`${value} ${stars}`);
+        }
+
+        function addRatingToPoster(text) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const poster = document.querySelector(`#poster${target} .poster-content`);
+
+            // Remove existing rating
+            const existing = poster.querySelector('.rating-badge');
+            if (existing) existing.remove();
+
+            // Add new rating
+            const badge = document.createElement('div');
+            badge.className = 'rating-badge';
+            badge.textContent = text;
+            badge.style.cssText = `
+                position: absolute;
+                z-index: 10;
+                background: rgba(255, 193, 7, 0.9);
+                color: white;
+                padding: 8px 15px;
+                border-radius: 25px;
+                font-weight: 700;
+                font-size: 1rem;
+                box-shadow: 0 4px 15px rgba(255, 193, 7, 0.5);
+                top: 20px;
+                right: 20px;
+            `;
+
+            const position = document.getElementById('ratingPosition').value;
+            if (position === 'top-left') {
+                badge.style.top = '20px';
+                badge.style.left = '20px';
+                badge.style.right = 'auto';
+            } else if (position === 'below-heading') {
+                badge.style.position = 'relative';
+                badge.style.top = 'auto';
+                badge.style.margin = '10px 0';
+                const heading = document.getElementById('heading' + target);
+                heading.after(badge);
+                return;
+            } else if (position === 'below-description') {
+                badge.style.position = 'relative';
+                badge.style.top = 'auto';
+                badge.style.margin = '10px 0';
+                const desc = document.getElementById('description' + target);
+                desc.after(badge);
+                return;
+            }
+
+            poster.appendChild(badge);
+        }
+
+        function applyRatingStyle(style) {
+            const value = document.getElementById('ratingValue').value;
+            const badge = document.querySelector(`.rating-badge`);
+            if (!badge) return;
+
+            if (style === 'stars') {
+                badge.textContent = '⭐'.repeat(Math.round(value));
+            } else if (style === 'number') {
+                badge.textContent = `${value}/5.0`;
+            } else if (style === 'both') {
+                badge.textContent = `${value} ${'⭐'.repeat(Math.round(value))}`;
+            }
+            showNotification(`✓ ${style} style applied`);
+        }
+
+        function removeRating() {
+            document.querySelectorAll('.rating-badge').forEach(el => el.remove());
+        }
+
+        // ==================== CONTACT INFO ====================
+        function toggleContact() {
+            const enabled = document.getElementById('contactEnabled').checked;
+            const controls = document.getElementById('contactControls');
+
+            if (enabled) {
+                controls.classList.remove('hidden');
+                updateContact();
+            } else {
+                controls.classList.add('hidden');
+                removeContact();
+            }
+        }
+
+        function updateContact() {
+            const phone = document.getElementById('contactPhone').value;
+            const whatsapp = document.getElementById('contactWhatsApp').value;
+            const email = document.getElementById('contactEmail').value;
+            const website = document.getElementById('contactWebsite').value;
+            const instagram = document.getElementById('contactInstagram').value;
+
+            let contactHTML = '<div style="font-size: 0.75rem; line-height: 1.6;">';
+
+            if (phone) contactHTML += `<div>📞 ${phone}</div>`;
+            if (whatsapp) contactHTML += `<div>💬 WhatsApp: ${whatsapp}</div>`;
+            if (email) contactHTML += `<div>📧 ${email}</div>`;
+            if (website) contactHTML += `<div>🌐 ${website}</div>`;
+            if (instagram) contactHTML += `<div>📱 ${instagram}</div>`;
+
+            contactHTML += '</div>';
+
+            addContactToPoster(contactHTML);
+        }
+
+        function addContactToPoster(html) {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const poster = document.querySelector(`#poster${target} .poster-content`);
+
+            // Remove existing contact
+            const existing = poster.querySelector('.contact-info');
+            if (existing) existing.remove();
+
+            // Add new contact
+            const contact = document.createElement('div');
+            contact.className = 'contact-info';
+            contact.innerHTML = html;
+            contact.style.cssText = `
+                position: absolute;
+                z-index: 10;
+                background: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 15px;
+                border-radius: 10px;
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                text-align: center;
+            `;
+
+            const position = document.getElementById('contactPosition').value;
+            if (position === 'top') {
+                contact.style.top = '20px';
+                contact.style.bottom = 'auto';
+            } else if (position === 'below-cta') {
+                contact.style.position = 'relative';
+                contact.style.margin = '20px 0';
+                contact.style.bottom = 'auto';
+                const cta = document.getElementById('cta' + target);
+                if (cta && !cta.classList.contains('hidden')) {
+                    cta.after(contact);
+                    return;
+                }
+            }
+
+            poster.appendChild(contact);
+        }
+
+        function applyContactStyle(style) {
+            const contact = document.querySelector('.contact-info');
+            if (!contact) return;
+
+            if (style === 'icons') {
+                // Already has icons
+            } else if (style === 'text') {
+                contact.innerHTML = contact.innerHTML.replace(/📞|💬|📧|🌐|📱/g, '');
+            } else if (style === 'compact') {
+                contact.style.padding = '10px';
+                contact.style.fontSize = '0.65rem';
+            }
+            showNotification(`✓ ${style} style applied`);
+        }
+
+        function removeContact() {
+            document.querySelectorAll('.contact-info').forEach(el => el.remove());
+        }
+
+        // ==================== SHAPES & BORDERS ====================
+        let currentShape = null;
+
+        function addShape(type) {
+            currentShape = type;
+            document.getElementById('shapeControls').classList.remove('hidden');
+            updateShape();
+        }
+
+        function updateShape() {
+            if (!currentShape) return;
+
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const poster = document.querySelector(`#poster${target} .poster-content`);
+            const color = document.getElementById('shapeColor').value;
+
+            // Remove existing shape
+            const existing = poster.querySelector('.decorative-shape');
+            if (existing) existing.remove();
+
+            // Create new shape
+            const shape = document.createElement('div');
+            shape.className = 'decorative-shape';
+            shape.style.position = 'absolute';
+            shape.style.zIndex = '1';
+
+            if (currentShape === 'circle') {
+                shape.style.cssText += `
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    background: ${color};
+                    opacity: 0.3;
+                `;
+            } else if (currentShape === 'square') {
+                shape.style.cssText += `
+                    width: 100px;
+                    height: 100px;
+                    background: ${color};
+                    opacity: 0.3;
+                `;
+            } else if (currentShape === 'border') {
+                shape.style.cssText += `
+                    width: calc(100% - 40px);
+                    height: calc(100% - 40px);
+                    border: 5px solid ${color};
+                    border-radius: 15px;
+                    top: 20px;
+                    left: 20px;
+                `;
+            } else if (currentShape === 'badge') {
+                shape.textContent = 'NEW';
+                shape.style.cssText += `
+                    background: ${color};
+                    color: white;
+                    padding: 5px 15px;
+                    border-radius: 20px;
+                    font-weight: 700;
+                `;
+            } else if (currentShape === 'ribbon') {
+                shape.textContent = 'SPECIAL';
+                shape.style.cssText += `
+                    background: ${color};
+                    color: white;
+                    padding: 10px 30px;
+                    font-weight: 700;
+                    transform: rotate(-45deg);
+                `;
+            } else if (currentShape === 'line') {
+                shape.style.cssText += `
+                    width: 80%;
+                    height: 3px;
+                    background: ${color};
+                `;
+            }
+
+            const position = document.getElementById('shapePosition').value;
+            const positions = {
+                'top-left': {top: '20px', left: '20px'},
+                'top-right': {top: '20px', right: '20px'},
+                'bottom-left': {bottom: '20px', left: '20px'},
+                'bottom-right': {bottom: '20px', right: '20px'},
+                'center': {top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}
+            };
+
+            Object.assign(shape.style, positions[position]);
+
+            poster.appendChild(shape);
+            document.getElementById('shapeColorHex').value = color;
+        }
+
+        function removeShape() {
+            const target = currentEditMode === 'mobile' ? 'Mobile' : 'Desktop';
+            const shape = document.querySelector(`#poster${target} .decorative-shape`);
+            if (shape) shape.remove();
+
+            document.getElementById('shapeControls').classList.add('hidden');
+            currentShape = null;
+            showNotification('✓ Shape removed');
+        }
+
+        // ==================== CAROUSEL SLIDE MANAGEMENT ====================
+        let carouselSlides = [];
+        let currentCarouselSlide = 0;
+
+        function initializeCarouselSlides() {
+            if (carouselSlides.length === 0) {
+                // Create 3 default slides
+                carouselSlides = [
+                    {
+                        heading: 'Slide 1: Top 10 Careers',
+                        subheading: 'Start Your Journey',
+                        description: 'This is the first slide of your carousel. Add more slides below!',
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                    },
+                    {
+                        heading: 'Slide 2: Explore Options',
+                        subheading: 'Find Your Path',
+                        description: 'Discover various career options available for you',
+                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+                    },
+                    {
+                        heading: 'Slide 3: Take Action',
+                        subheading: 'Start Today',
+                        description: 'Begin your journey to a successful future now!',
+                        background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+                    }
+                ];
+            }
+            updateSlideButtons();
+            displayCarouselSlide(0);
+        }
+
+        function updateSlideButtons() {
+            const container = document.getElementById('slideButtons');
+            container.innerHTML = '';
+
+            carouselSlides.forEach((slide, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = `Slide ${index + 1}`;
+                btn.onclick = () => displayCarouselSlide(index);
+                btn.style.padding = '10px 20px';
+                btn.style.borderRadius = '8px';
+                btn.style.border = 'none';
+                btn.style.cursor = 'pointer';
+                btn.style.fontSize = '13px';
+
+                if (index === currentCarouselSlide) {
+                    btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.background = '#e0e0e0';
+                    btn.style.color = '#333';
+                }
+
+                container.appendChild(btn);
+
+                // Add delete button if more than 2 slides
+                if (carouselSlides.length > 2) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '🗑️';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteCarouselSlide(index);
+                    };
+                    deleteBtn.style.padding = '10px';
+                    deleteBtn.style.borderRadius = '8px';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.style.background = '#ff4444';
+                    deleteBtn.style.color = 'white';
+                    deleteBtn.style.fontSize = '12px';
+                    deleteBtn.style.marginLeft = '-5px';
+                    container.appendChild(deleteBtn);
+                }
+            });
+        }
+
+        function displayCarouselSlide(index) {
+            currentCarouselSlide = index;
+            const slide = carouselSlides[index];
+
+            document.getElementById('headingCarousel').textContent = slide.heading;
+            document.getElementById('subheadingCarousel').textContent = slide.subheading;
+            document.getElementById('descriptionCarousel').textContent = slide.description;
+            document.getElementById('posterCarousel').style.background = slide.background;
+
+            // Update input fields
+            document.getElementById('heading').value = slide.heading;
+            document.getElementById('subheading').value = slide.subheading;
+            document.getElementById('description').value = slide.description;
+
+            updateSlideButtons();
+            showNotification(`✓ Now editing Slide ${index + 1}`);
+        }
+
+        function addCarouselSlide() {
+            if (carouselSlides.length >= 10) {
+                showNotification('⚠️ Maximum 10 slides allowed');
+                return;
+            }
+
+            const newSlide = {
+                heading: `Slide ${carouselSlides.length + 1}: New Content`,
+                subheading: 'Add Your Message',
+                description: 'Customize this slide with your content',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            };
+
+            carouselSlides.push(newSlide);
+            displayCarouselSlide(carouselSlides.length - 1);
+            showNotification(`✓ Added Slide ${carouselSlides.length}`);
+        }
+
+        function deleteCarouselSlide(index) {
+            if (carouselSlides.length <= 2) {
+                showNotification('⚠️ Need at least 2 slides');
+                return;
+            }
+
+            carouselSlides.splice(index, 1);
+
+            // Adjust current slide if needed
+            if (currentCarouselSlide >= carouselSlides.length) {
+                currentCarouselSlide = carouselSlides.length - 1;
+            }
+
+            displayCarouselSlide(currentCarouselSlide);
+            showNotification(`✓ Deleted slide`);
+        }
+
+        function updateCarouselSlideContent() {
+            if (currentEditMode === 'carousel' && carouselSlides.length > 0) {
+                carouselSlides[currentCarouselSlide].heading = document.getElementById('heading').value;
+                carouselSlides[currentCarouselSlide].subheading = document.getElementById('subheading').value;
+                carouselSlides[currentCarouselSlide].description = document.getElementById('description').value;
+            }
+        }
+
+        // ==================== INFOGRAPHIC LAYOUTS ====================
+        function setInfographicLayout(layout) {
+            const content = document.getElementById('infographicContent');
+
+            if (layout === 'stats') {
+                content.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center;">
+                        <div style="font-size: 48px; font-weight: bold; color: #fff;">85%</div>
+                        <div style="font-size: 16px; margin-top: 10px;">Students find success</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center;">
+                        <div style="font-size: 48px; font-weight: bold; color: #fff;">2.5x</div>
+                        <div style="font-size: 16px; margin-top: 10px;">Faster career growth</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; text-align: center;">
+                        <div style="font-size: 48px; font-weight: bold; color: #fff;">10+</div>
+                        <div style="font-size: 16px; margin-top: 10px;">Top career options</div>
+                    </div>
+                `;
+            } else if (layout === 'timeline') {
+                content.innerHTML = `
+                    <div style="border-left: 3px solid rgba(255,255,255,0.5); padding-left: 20px; margin-bottom: 20px;">
+                        <div style="background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: -32px; margin-bottom: 10px; float: left;">1</div>
+                        <h4 style="font-size: 18px; margin: 0 0 5px 0;">Choose Your Stream</h4>
+                        <p style="font-size: 14px; opacity: 0.9;">Select the right path after 10th/12th</p>
+                    </div>
+                    <div style="border-left: 3px solid rgba(255,255,255,0.5); padding-left: 20px; margin-bottom: 20px;">
+                        <div style="background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: -32px; margin-bottom: 10px; float: left;">2</div>
+                        <h4 style="font-size: 18px; margin: 0 0 5px 0;">Prepare & Study</h4>
+                        <p style="font-size: 14px; opacity: 0.9;">Focus on your goals and work hard</p>
+                    </div>
+                    <div style="border-left: 3px solid rgba(255,255,255,0.5); padding-left: 20px;">
+                        <div style="background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: -32px; margin-bottom: 10px; float: left;">3</div>
+                        <h4 style="font-size: 18px; margin: 0 0 5px 0;">Achieve Success</h4>
+                        <p style="font-size: 14px; opacity: 0.9;">Reach your dream career destination</p>
+                    </div>
+                `;
+            } else if (layout === 'comparison') {
+                content.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 10px;">✓</div>
+                            <h4 style="font-size: 16px; margin: 0 0 8px 0;">With Guidance</h4>
+                            <p style="font-size: 13px; opacity: 0.9;">Clear career path<br>85% success rate<br>Fast growth</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 10px;">✗</div>
+                            <h4 style="font-size: 16px; margin: 0 0 8px 0;">Without Guidance</h4>
+                            <p style="font-size: 13px; opacity: 0.9;">Confused choices<br>50% success rate<br>Slow progress</p>
+                        </div>
+                    </div>
+                `;
+            } else if (layout === 'steps') {
+                content.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px 20px; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center;">
+                        <div style="background: white; color: #667eea; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">1</div>
+                        <div>
+                            <h4 style="font-size: 16px; margin: 0;">Sign Up Free</h4>
+                            <p style="font-size: 12px; margin: 5px 0 0 0; opacity: 0.9;">Create your account in 2 minutes</p>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px 20px; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center;">
+                        <div style="background: white; color: #667eea; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">2</div>
+                        <div>
+                            <h4 style="font-size: 16px; margin: 0;">Get Personalized Advice</h4>
+                            <p style="font-size: 12px; margin: 5px 0 0 0; opacity: 0.9;">Expert counseling for your goals</p>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px 20px; border-radius: 12px; display: flex; align-items: center;">
+                        <div style="background: white; color: #667eea; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">3</div>
+                        <div>
+                            <h4 style="font-size: 16px; margin: 0;">Start Your Journey</h4>
+                            <p style="font-size: 12px; margin: 5px 0 0 0; opacity: 0.9;">Begin working towards success</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Show/hide infographic customizer based on layout
+            document.getElementById('infographicCustomizer').style.display = '';
+            document.getElementById('statsEditor').style.display = 'none';
+            document.getElementById('timelineEditor').style.display = 'none';
+
+            if (layout === 'stats') {
+                document.getElementById('statsEditor').style.display = '';
+            } else if (layout === 'timeline') {
+                document.getElementById('timelineEditor').style.display = '';
+            }
+
+            showNotification(`✓ Applied ${layout} layout`);
+        }
+
+        function updateInfographicStats() {
+            const stat1Num = document.getElementById('stat1Num').value;
+            const stat1Label = document.getElementById('stat1Label').value;
+            const stat2Num = document.getElementById('stat2Num').value;
+            const stat2Label = document.getElementById('stat2Label').value;
+            const stat3Num = document.getElementById('stat3Num').value;
+            const stat3Label = document.getElementById('stat3Label').value;
+
+            const content = document.getElementById('infographicContent');
+            content.innerHTML = `
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center;">
+                    <div style="font-size: 48px; font-weight: bold; color: #fff;">${stat1Num}</div>
+                    <div style="font-size: 16px; margin-top: 10px;">${stat1Label}</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center;">
+                    <div style="font-size: 48px; font-weight: bold; color: #fff;">${stat2Num}</div>
+                    <div style="font-size: 16px; margin-top: 10px;">${stat2Label}</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 48px; font-weight: bold; color: #fff;">${stat3Num}</div>
+                    <div style="font-size: 16px; margin-top: 10px;">${stat3Label}</div>
+                </div>
+            `;
+        }
+
+        function updateInfographicTimeline() {
+            const t1Title = document.getElementById('timeline1Title').value;
+            const t1Desc = document.getElementById('timeline1Desc').value;
+            const t2Title = document.getElementById('timeline2Title').value;
+            const t2Desc = document.getElementById('timeline2Desc').value;
+            const t3Title = document.getElementById('timeline3Title').value;
+            const t3Desc = document.getElementById('timeline3Desc').value;
+
+            const content = document.getElementById('infographicContent');
+            content.innerHTML = `
+                <div style="border-left: 3px solid rgba(255,255,255,0.5); padding-left: 20px; margin-bottom: 20px;">
+                    <div style="background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: -32px; margin-bottom: 10px; float: left;">1</div>
+                    <h4 style="font-size: 18px; margin: 0 0 5px 0;">${t1Title}</h4>
+                    <p style="font-size: 14px; opacity: 0.9;">${t1Desc}</p>
+                </div>
+                <div style="border-left: 3px solid rgba(255,255,255,0.5); padding-left: 20px; margin-bottom: 20px;">
+                    <div style="background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: -32px; margin-bottom: 10px; float: left;">2</div>
+                    <h4 style="font-size: 18px; margin: 0 0 5px 0;">${t2Title}</h4>
+                    <p style="font-size: 14px; opacity: 0.9;">${t2Desc}</p>
+                </div>
+                <div style="border-left: 3px solid rgba(255,255,255,0.5); padding-left: 20px;">
+                    <div style="background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: -32px; margin-bottom: 10px; float: left;">3</div>
+                    <h4 style="font-size: 18px; margin: 0 0 5px 0;">${t3Title}</h4>
+                    <p style="font-size: 14px; opacity: 0.9;">${t3Desc}</p>
+                </div>
+            `;
+        }
+
         // ==================== DOWNLOAD FUNCTIONS ====================
         async function downloadPoster(format) {
-            const posterId = format === 'mobile' ? 'posterMobile' : 'posterDesktop';
+            let posterId;
+            if (format === 'mobile') posterId = 'posterMobile';
+            else if (format === 'desktop') posterId = 'posterDesktop';
+            else if (format === 'carousel') posterId = 'posterCarousel';
+            else if (format === 'infographic') posterId = 'posterInfographic';
+
             const poster = document.getElementById(posterId);
 
             try {
@@ -2586,6 +4313,24 @@
         async function downloadBoth() {
             await downloadPoster('mobile');
             setTimeout(() => downloadPoster('desktop'), 1000);
+        }
+
+        async function downloadAllCarousel() {
+            if (carouselSlides.length === 0) {
+                showNotification('⚠️ No carousel slides to download');
+                return;
+            }
+
+            showNotification(`📦 Downloading ${carouselSlides.length} carousel slides...`);
+
+            for (let i = 0; i < carouselSlides.length; i++) {
+                displayCarouselSlide(i);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Wait for render
+                await downloadPoster('carousel');
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait between downloads
+            }
+
+            showNotification(`✓ Downloaded all ${carouselSlides.length} slides!`);
         }
 
         // Notification system
